@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import InstitutionCard from "@/components/InstitutionCard";
-import { Search, Heart, Users, Building2, TrendingUp, Calendar, Award } from "lucide-react";
+import { Search, Heart, Users, Building2, TrendingUp, Calendar, Award, CheckCircle2 } from "lucide-react";
 import heroImage from "@/assets/hero-students.jpg";
 import jainHeritage from "@/assets/jain-heritage.jpg";
 import hostelRoom from "@/assets/hostel-room.jpg";
@@ -102,6 +102,112 @@ const Index = () => {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Mission & Vision */}
+        <section className="py-20 relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-teal/5" />
+          
+          <div className="container mx-auto px-4 relative">
+            <div className="text-center mb-16 animate-fade-in">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Mission & Vision</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Guiding principles that drive our commitment to transform rural education
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {/* Vision Card */}
+              <Card className="card-elevated hover-lift group relative overflow-hidden animate-slide-up">
+                {/* Gradient overlay */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-teal" />
+                
+                <CardContent className="p-8 md:p-10">
+                  <div className="flex flex-col items-center text-center mb-6">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-teal/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <TrendingUp className="w-10 h-10 text-primary" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-primary to-teal bg-clip-text text-transparent">
+                      Our Vision
+                    </h3>
+                    <div className="w-16 h-1 bg-gradient-to-r from-primary to-teal rounded-full" />
+                  </div>
+
+                  <p className="text-muted-foreground leading-relaxed text-center text-base md:text-lg">
+                    To build a network of modern, value-based boarding institutions that empower 
+                    rural children with quality education, holistic growth, and equal opportunities.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Mission Card */}
+              <Card className="card-elevated hover-lift group relative overflow-hidden animate-slide-up" style={{ animationDelay: '100ms' }}>
+                {/* Gradient overlay */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal to-saffron" />
+                
+                <CardContent className="p-8 md:p-10">
+                  <div className="flex flex-col items-center text-center mb-6">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-teal/20 to-saffron/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <Heart className="w-10 h-10 text-teal" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-teal to-saffron bg-clip-text text-transparent">
+                      Our Mission
+                    </h3>
+                    <div className="w-16 h-1 bg-gradient-to-r from-teal to-saffron rounded-full" />
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3 text-left">
+                      <div className="w-6 h-6 rounded-full bg-teal/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle2 className="w-4 h-4 text-teal" />
+                      </div>
+                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                        Deliver unified, high-quality education guided by professional management
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start gap-3 text-left">
+                      <div className="w-6 h-6 rounded-full bg-teal/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle2 className="w-4 h-4 text-teal" />
+                      </div>
+                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                        Prepare students for competitive exams and national-level opportunities
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start gap-3 text-left">
+                      <div className="w-6 h-6 rounded-full bg-teal/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle2 className="w-4 h-4 text-teal" />
+                      </div>
+                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                        Strengthen rural communities by reducing migration and nurturing cultural values
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-start gap-3 text-left">
+                      <div className="w-6 h-6 rounded-full bg-teal/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle2 className="w-4 h-4 text-teal" />
+                      </div>
+                      <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                        Enable trustees and donors to create sustainable, meaningful impact in rural education
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Bottom accent */}
+            <div className="mt-12 text-center animate-fade-in" style={{ animationDelay: '200ms' }}>
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-primary/10 to-teal/10 border border-primary/20">
+                <Award className="w-5 h-5 text-primary" />
+                <span className="text-sm font-medium">
+                  Building a brighter future through education and community
+                </span>
+              </div>
             </div>
           </div>
         </section>
