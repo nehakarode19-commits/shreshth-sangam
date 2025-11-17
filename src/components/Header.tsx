@@ -1,10 +1,19 @@
 import { useState } from "react";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, User } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, userRole, signOut } = useAuth();
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -14,6 +23,11 @@ const Header = () => {
     { to: "/trustees", label: "Trustees" },
     { to: "/events", label: "Events" },
   ];
+
+  const getRoleLabel = (role: string | null) => {
+    if (!role) return 'User';
+    return role.charAt(0).toUpperCase() + role.slice(1);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -42,12 +56,39 @@ const Header = () => {
         </div>
 
         <div className="flex items-center space-x-3">
-          <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-            Sign In
-          </Button>
-          <Button size="sm" className="bg-teal hover:bg-teal/90">
-            Donate Now
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  <span className="hidden sm:inline">{getRoleLabel(userRole)}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="px-2 py-1.5">
+                  <p className="text-sm font-medium">{user.email}</p>
+                  <p className="text-xs text-muted-foreground">{getRoleLabel(userRole)}</p>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={signOut} className="text-destructive cursor-pointer">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <NavLink to="/auth">
+              <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+                Sign In
+              </Button>
+            </NavLink>
+          )}
+          
+          <NavLink to="/donors">
+            <Button size="sm" className="bg-teal hover:bg-teal/90">
+              Donate Now
+            </Button>
+          </NavLink>
 
           {/* Mobile Menu Button */}
           <button
@@ -74,9 +115,27 @@ const Header = () => {
                 {link.label}
               </NavLink>
             ))}
-            <Button variant="outline" size="sm" className="w-full">
-              Sign In
-            </Button>
+            {!user && (
+              <NavLink to="/auth" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="outline" size="sm" className="w-full">
+                  Sign In
+                </Button>
+              </NavLink>
+            )}
+            {user && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full text-destructive"
+                onClick={() => {
+                  signOut();
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign Out
+              </Button>
+            )}
           </div>
         </div>
       )}
