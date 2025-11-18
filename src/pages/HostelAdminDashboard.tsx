@@ -29,8 +29,8 @@ export default function HostelAdminDashboard() {
   });
 
   useEffect(() => {
-    if (userRole !== 'hostel_admin') {
-      navigate('/');
+    if (userRole && userRole !== 'hostel_admin') {
+      navigate('/portal-selection');
     }
   }, [userRole, navigate]);
 

@@ -32,8 +32,8 @@ export default function SuperAdminDashboard() {
   });
 
   useEffect(() => {
-    if (userRole !== 'super_admin') {
-      navigate('/');
+    if (userRole && userRole !== 'super_admin') {
+      navigate('/portal-selection');
     }
   }, [userRole, navigate]);
 
@@ -94,83 +94,91 @@ export default function SuperAdminDashboard() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
+          <Card className="hover:shadow-md transition-shadow border-primary/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Hostels</CardTitle>
-              <Home className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Hostels</CardTitle>
+              <Home className="h-5 w-5 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalHostels}</div>
+              <div className="text-3xl font-bold text-primary">{stats.totalHostels}</div>
+              <p className="text-xs text-muted-foreground mt-1">Registered hostels</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="hover:shadow-md transition-shadow border-maroon/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Institutions</CardTitle>
-              <Building className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Institutions</CardTitle>
+              <Building className="h-5 w-5 text-maroon" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalInstitutions}</div>
+              <div className="text-3xl font-bold text-maroon">{stats.totalInstitutions}</div>
+              <p className="text-xs text-muted-foreground mt-1">Active institutions</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="hover:shadow-md transition-shadow border-teal/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Students</CardTitle>
-              <Users className="h-4 w-4 text-blue-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Students</CardTitle>
+              <Users className="h-5 w-5 text-teal" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{stats.totalStudents}</div>
+              <div className="text-3xl font-bold text-teal">{stats.totalStudents}</div>
+              <p className="text-xs text-muted-foreground mt-1">Enrolled students</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="hover:shadow-md transition-shadow border-destructive/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Donors</CardTitle>
-              <Heart className="h-4 w-4 text-red-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Donors</CardTitle>
+              <Heart className="h-5 w-5 text-destructive" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">{stats.totalDonors}</div>
+              <div className="text-3xl font-bold text-destructive">{stats.totalDonors}</div>
+              <p className="text-xs text-muted-foreground mt-1">Generous supporters</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="hover:shadow-md transition-shadow border-saffron/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Trustees</CardTitle>
-              <Shield className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Trustees</CardTitle>
+              <Shield className="h-5 w-5 text-saffron" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalTrustees}</div>
+              <div className="text-3xl font-bold text-saffron">{stats.totalTrustees}</div>
+              <p className="text-xs text-muted-foreground mt-1">Active trustees</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="hover:shadow-md transition-shadow border-success/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Funding</CardTitle>
-              <DollarSign className="h-4 w-4 text-green-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Funding</CardTitle>
+              <DollarSign className="h-5 w-5 text-success" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">₹{stats.totalFunding.toLocaleString()}</div>
+              <div className="text-3xl font-bold text-success">₹{stats.totalFunding.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground mt-1">Total raised</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="hover:shadow-md transition-shadow border-accent/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Pending Approvals</CardTitle>
-              <Clock className="h-4 w-4 text-yellow-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Approvals</CardTitle>
+              <Clock className="h-5 w-5 text-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">{stats.pendingApprovals}</div>
+              <div className="text-3xl font-bold text-accent">{stats.pendingApprovals}</div>
+              <p className="text-xs text-muted-foreground mt-1">Awaiting review</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="hover:shadow-md transition-shadow border-primary/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Approved Today</CardTitle>
-              <CheckCircle className="h-4 w-4 text-green-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Approved Today</CardTitle>
+              <CheckCircle className="h-5 w-5 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.approvedToday}</div>
+              <div className="text-3xl font-bold text-primary">{stats.approvedToday}</div>
+              <p className="text-xs text-muted-foreground mt-1">Processed today</p>
             </CardContent>
           </Card>
         </div>
