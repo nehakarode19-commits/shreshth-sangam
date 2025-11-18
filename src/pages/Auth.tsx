@@ -11,6 +11,31 @@ import { ArrowLeft, GraduationCap, Building2, Users, Heart } from "lucide-react"
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { NavLink } from "@/components/NavLink";
+import { z } from "zod";
+
+// Validation schemas
+const baseAuthSchema = z.object({
+  email: z.string().email("Invalid email address").max(255, "Email too long"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+const signUpSchema = baseAuthSchema.extend({
+  fullName: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name too long"),
+  phone: z.string().regex(/^\+?[\d\s-()]{10,}$/, "Invalid phone number"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+const trusteeSignUpSchema = signUpSchema.extend({
+  institutionName: z.string().trim().min(2, "Institution name required").max(200, "Name too long"),
+  designation: z.string().trim().min(2, "Designation required").max(100, "Designation too long"),
+});
+
+const donorSignUpSchema = signUpSchema.extend({
+  country: z.string().optional(),
+});
 
 // Auth form component extracted outside to avoid hoisting issues
 const AuthFormComponent = ({ 
@@ -40,28 +65,40 @@ const AuthFormComponent = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation
-    if (!email || !password) {
-      toast.error('Please fill in all required fields');
-      return;
+    try {
+      // Validate based on portal type and mode
+      if (isSignUp) {
+        let schema: z.ZodSchema = signUpSchema;
+        if (portalType === 'trustee') {
+          schema = trusteeSignUpSchema;
+        } else if (portalType === 'donor') {
+          schema = donorSignUpSchema;
+        }
+        
+        const formData = {
+          email,
+          password,
+          confirmPassword,
+          fullName,
+          phone,
+          ...(portalType === 'trustee' && { institutionName, designation }),
+          ...(portalType === 'donor' && { country }),
+        };
+        
+        schema.parse(formData);
+      } else {
+        baseAuthSchema.parse({ email, password });
+      }
+      
+      onSubmit(email, password, fullName, phone, institutionName, designation, country);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const firstError = error.issues[0];
+        toast.error(firstError.message);
+      } else {
+        toast.error('Validation failed');
+      }
     }
-    
-    if (isSignUp && !fullName) {
-      toast.error('Please enter your full name');
-      return;
-    }
-
-    if (password.length < 6) {
-      toast.error('Password must be at least 6 characters');
-      return;
-    }
-
-    if (isSignUp && password !== confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
-
-    onSubmit(email, password, fullName, phone, institutionName, designation, country);
   };
 
   return (
@@ -287,13 +324,14 @@ const Auth = () => {
                 name: fullName,
                 email: email,
                 phone: phone,
-                designation: designation,
-                // Store institution/hostel name in a custom field or link to actual institution
-                // For now, we'll add this as a note in designation
+                designation: `${designation} - ${institutionName}`,
               });
 
             if (trusteeError) {
-              console.error('Error creating trustee record:', trusteeError);
+              if (import.meta.env.DEV) {
+                console.error('Error creating trustee record:', trusteeError);
+              }
+              toast.error('Account created but profile setup incomplete. Please contact support.');
             }
           } else if (portalType === 'donor') {
             const { error: donorError } = await supabase
@@ -308,7 +346,10 @@ const Auth = () => {
               });
 
             if (donorError) {
-              console.error('Error creating donor record:', donorError);
+              if (import.meta.env.DEV) {
+                console.error('Error creating donor record:', donorError);
+              }
+              toast.error('Account created but profile setup incomplete. Please contact support.');
             }
           }
 
@@ -382,8 +423,28 @@ const Auth = () => {
         }
       }
     } catch (error: any) {
-      console.error('Auth error:', error);
-      toast.error(error.message || 'An error occurred during authentication');
+      if (import.meta.env.DEV) {
+        console.error('Auth error:', error);
+      }
+      
+      let errorMessage = 'An error occurred during authentication';
+      
+      if (error?.message) {
+        // Sanitize error messages to avoid exposing sensitive information
+        if (error.message.includes('already registered')) {
+          errorMessage = 'This email is already registered';
+        } else if (error.message.includes('Invalid login')) {
+          errorMessage = 'Invalid email or password';
+        } else if (error.message.includes('Email')) {
+          errorMessage = 'Please check your email address';
+        } else if (error.message.includes('Password')) {
+          errorMessage = 'Please check your password';
+        } else {
+          errorMessage = 'Authentication failed. Please try again';
+        }
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
