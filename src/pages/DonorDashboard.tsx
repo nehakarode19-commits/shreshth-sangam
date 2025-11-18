@@ -66,6 +66,11 @@ export default function DonorDashboard() {
     { label: 'Volunteer Sign', path: '/donor/volunteer', icon: <MessageSquare className="h-5 w-5" /> },
   ];
 
+  const handleDonate = (project: typeof projectsToSponsor[0]) => {
+    // TODO: Implement donation modal
+    alert(`Donate to ${project.hostel} for ${project.purpose}`);
+  };
+
   const projectsToSponsor = [
     { hostel: 'Greenwood Hostel', purpose: 'Library Expansion', location: 'Mumbai', amount: '₹5,00,000' },
     { hostel: 'Riverside Hostel', purpose: 'Infrastructure Renovation', location: 'Delhi', amount: '₹7,50,000' },
@@ -86,92 +91,104 @@ export default function DonorDashboard() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="border-l-4 border-l-primary">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Donation</CardTitle>
-              <DollarSign className="h-4 w-4 text-green-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Donation</CardTitle>
+              <DollarSign className="h-5 w-5 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-3xl font-bold text-foreground">
                 ₹{stats.totalDonations.toLocaleString()}
               </div>
+              <p className="text-xs text-muted-foreground mt-1">Lifetime contributions</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-accent">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Hostel Support</CardTitle>
-              <Building className="h-4 w-4 text-blue-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Hostel Support</CardTitle>
+              <Building className="h-5 w-5 text-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{stats.hostelsSupported}</div>
+              <div className="text-3xl font-bold text-foreground">{stats.hostelsSupported}</div>
+              <p className="text-xs text-muted-foreground mt-1">Hostels benefited</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-yellow-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Donation Level</CardTitle>
-              <Award className="h-4 w-4 text-yellow-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Donation Level</CardTitle>
+              <Award className="h-5 w-5 text-yellow-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">{stats.donationLevel}</div>
+              <div className="text-3xl font-bold text-foreground uppercase">{stats.donationLevel}</div>
+              <p className="text-xs text-muted-foreground mt-1">Impact tier</p>
             </CardContent>
           </Card>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Projects To Sponsor</CardTitle>
+            <CardTitle className="text-xl">Projects To Sponsor</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">Support meaningful initiatives across our hostel network</p>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Hostel Name</TableHead>
-                  <TableHead>Donation Purpose</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {projectsToSponsor.map((project, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell className="font-medium">{project.hostel}</TableCell>
-                    <TableCell>{project.purpose}</TableCell>
-                    <TableCell>{project.location}</TableCell>
-                    <TableCell>{project.amount}</TableCell>
-                    <TableCell>
-                      <Button size="sm">Donate</Button>
-                    </TableCell>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead className="font-semibold">Hostel Name</TableHead>
+                    <TableHead className="font-semibold">Donation Purpose</TableHead>
+                    <TableHead className="font-semibold">Location</TableHead>
+                    <TableHead className="font-semibold">Amount</TableHead>
+                    <TableHead className="font-semibold text-right">Action</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {projectsToSponsor.map((project, idx) => (
+                    <TableRow key={idx} className="hover:bg-muted/30">
+                      <TableCell className="font-medium">{project.hostel}</TableCell>
+                      <TableCell>{project.purpose}</TableCell>
+                      <TableCell className="text-muted-foreground">{project.location}</TableCell>
+                      <TableCell className="font-semibold">{project.amount}</TableCell>
+                      <TableCell className="text-right">
+                        <Button 
+                          size="sm" 
+                          onClick={() => handleDonate(project)}
+                          className="bg-primary hover:bg-primary/90"
+                        >
+                          Donate
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Make a Donation</CardTitle>
+              <CardTitle className="text-lg">Make a Donation</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full">Donate to Hostel</Button>
-              <Button variant="outline" className="w-full">Donate to Institution</Button>
-              <Button variant="outline" className="w-full">View All Projects</Button>
+              <Button className="w-full h-11">Donate to Hostel</Button>
+              <Button variant="outline" className="w-full h-11">Donate to Institution</Button>
+              <Button variant="outline" className="w-full h-11">View All Projects</Button>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
             <CardHeader>
-              <CardTitle>Your Impact</CardTitle>
+              <CardTitle className="text-lg">Your Impact</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Your contributions have helped {stats.hostelsSupported} hostels provide better facilities to students across India.
+              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                Your contributions have helped <span className="font-semibold text-foreground">{stats.hostelsSupported} hostels</span> provide better facilities to students across India.
               </p>
-              <Button variant="secondary" className="w-full">
+              <Button variant="default" className="w-full h-11" onClick={() => window.location.href = '/donor/impact-reports'}>
                 View Impact Reports
               </Button>
             </CardContent>
