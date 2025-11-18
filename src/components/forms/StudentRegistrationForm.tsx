@@ -313,7 +313,7 @@ export default function StudentRegistrationForm() {
               </div>
               <div className="flex gap-2">
                 <Button type="button" variant="outline" onClick={handleBack} className="flex-1">Back</Button>
-                <Button type="submit" className="flex-1">Complete Registration</Button>
+                <Button type="submit" className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">Complete Registration</Button>
               </div>
             </form>
           )}
