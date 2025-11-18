@@ -4,7 +4,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Home, Building, Clock, Shield, FileText, MessageSquare } from 'lucide-react';
+import { Home, Building, Clock, Shield, FileText, MessageSquare, Book, Users } from 'lucide-react';
+import DashboardLayout from '@/components/DashboardLayout';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
 interface TrusteeStats {
   hostelsManaged: number;
@@ -56,99 +59,160 @@ export default function TrusteeDashboard() {
     fetchStats();
   }, [user]);
 
-  return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-foreground">Trustee Portal</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">{user?.email}</span>
-            <Button onClick={signOut} variant="outline">Sign Out</Button>
-          </div>
-        </div>
-      </header>
+  const sidebarItems = [
+    { label: 'Dashboard', path: '/dashboard/trustee', icon: <Home className="h-5 w-5" /> },
+    { label: 'Institution', path: '/institutions', icon: <Building className="h-5 w-5" /> },
+    { label: 'Avail Scholarship', path: '/scholarships', icon: <Book className="h-5 w-5" /> },
+    { label: 'Loan Helpdesk', path: '/loans', icon: <FileText className="h-5 w-5" /> },
+    { label: 'Nutrition Support', path: '/nutrition', icon: <Shield className="h-5 w-5" /> },
+    { label: 'Learning Resources', path: '/resources', icon: <Book className="h-5 w-5" /> },
+    { label: 'Help', path: '/help', icon: <MessageSquare className="h-5 w-5" /> },
+  ];
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
+  const applicationTimeline = [
+    { college: 'Greenwood University', location: 'Mumbai', request: 'Infrastructure Renovation Fund Raise', status: 'submitted' },
+    { college: 'Riverside College', location: 'Delhi', request: 'Library Expansion Project', status: 'rejected' },
+    { college: 'Hillside Academy', location: 'Bangalore', request: 'Sports Facilities Upgrade', status: 'approved' },
+  ];
+
+  return (
+    <DashboardLayout
+      sidebarItems={sidebarItems}
+      currentPath="/dashboard/trustee"
+      userName="Shyam"
+      userPhone="+91 98765 43210"
+    >
+      <div className="space-y-6">
+        <div>
           <h2 className="text-3xl font-bold text-foreground mb-2">Trustee Dashboard</h2>
           <p className="text-muted-foreground">Manage your responsibilities and oversight</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Hostels Managed</CardTitle>
+              <CardTitle className="text-sm font-medium">Total Hostels</CardTitle>
               <Home className="h-4 w-4 text-blue-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{stats.hostelsManaged}</div>
+              <div className="text-2xl font-bold text-blue-600">150</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Institutions Managed</CardTitle>
-              <Building className="h-4 w-4 text-purple-500" />
+              <CardTitle className="text-sm font-medium">Active Hostels</CardTitle>
+              <Building className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-purple-600">{stats.institutionsManaged}</div>
+              <div className="text-2xl font-bold text-green-600">200+</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Pending Approvals</CardTitle>
-              <Clock className="h-4 w-4 text-yellow-500" />
+              <CardTitle className="text-sm font-medium">Dormant Hostels</CardTitle>
+              <Clock className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">{stats.pendingApprovals}</div>
+              <div className="text-2xl font-bold text-orange-600">15</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Compliance Score</CardTitle>
-              <Shield className="h-4 w-4 text-green-500" />
+              <CardTitle className="text-sm font-medium">Total Hostel Beds</CardTitle>
+              <Users className="h-4 w-4 text-purple-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.complianceScore}%</div>
+              <div className="text-2xl font-bold text-purple-600">5000+</div>
             </CardContent>
           </Card>
         </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Application Timeline Tracker</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>College Name</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead>Requests Raised</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {applicationTimeline.map((app, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell className="font-medium">{app.college}</TableCell>
+                    <TableCell>{app.location}</TableCell>
+                    <TableCell>{app.request}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          app.status === 'approved'
+                            ? 'default'
+                            : app.status === 'rejected'
+                            ? 'destructive'
+                            : 'secondary'
+                        }
+                      >
+                        {app.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
 
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                Management
-              </CardTitle>
+              <CardTitle>Student Applications to Hostels</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <Button className="w-full">View Managed Hostels</Button>
-              <Button variant="outline" className="w-full">View Managed Institutions</Button>
-              <Button variant="outline" className="w-full">Compliance Documents</Button>
+            <CardContent>
+              <div className="h-64 flex items-center justify-center text-muted-foreground">
+                Chart visualization would go here
+              </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MessageSquare className="h-5 w-5" />
-                Communication
-              </CardTitle>
+              <CardTitle>Hostel Funding Received</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Stay connected with admins and coordinators
-              </p>
-              <Button variant="secondary" className="w-full">
-                Communication Hub
-              </Button>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Hostel Name</TableHead>
+                    <TableHead className="text-right">Funding Received</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Greenwood Hostel</TableCell>
+                    <TableCell className="text-right">₹5,00,000</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Riverside Hostel</TableCell>
+                    <TableCell className="text-right">₹3,50,000</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Hillside Hostel</TableCell>
+                    <TableCell className="text-right">₹7,00,000</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }
