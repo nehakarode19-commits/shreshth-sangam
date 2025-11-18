@@ -1,178 +1,170 @@
 import { useState } from "react";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown, Globe } from "lucide-react";
-import { Facebook, Youtube, Instagram } from "lucide-react";
+import { Menu, X, LogIn, UserCircle, Building2, Heart, Users, Globe } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [language, setLanguage] = useState("ENGLISH");
+  const [language, setLanguage] = useState("EN");
 
-  const adminLogins = [
-    { label: "HOSTEL LOGIN", to: "/auth" },
-    { label: "TRUSTEE LOGIN", to: "/auth" },
-    { label: "STUDENT LOGIN", to: "/auth" },
-    { label: "DONOR LOGIN", to: "/auth" },
+  const portalLogins = [
+    { label: "Student", icon: UserCircle, to: "/auth" },
+    { label: "Hostel", icon: Building2, to: "/auth" },
+    { label: "Trustee", icon: Users, to: "/auth" },
+    { label: "Donor", icon: Heart, to: "/auth" },
   ];
 
   const mainNavLinks = [
-    { to: "/", label: "About Us" },
-    { to: "/institutions", label: "Institution" },
-    { to: "/donors", label: "Donors" },
-    { to: "/events", label: "Media" },
+    { to: "/", label: "Home" },
+    { to: "/institutions", label: "Institutions" },
+    { to: "/apply", label: "Apply Now" },
+    { to: "/donors", label: "Support Us" },
+    { to: "/events", label: "Events" },
     { to: "/contact", label: "Contact" },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
-      {/* Top Bar - Admin Logins */}
-      <div className="bg-maroon text-maroon-foreground">
-        <div className="container mx-auto px-4">
-          <div className="flex h-10 items-center justify-between">
-            {/* Admin Login Links */}
-            <div className="hidden md:flex items-center gap-1 text-xs font-medium">
-              {adminLogins.map((link, index) => (
-                <div key={link.label} className="flex items-center">
-                  <NavLink
-                    to={link.to}
-                    className="hover:text-white/80 transition-colors px-3 py-2"
-                  >
-                    {link.label}
-                  </NavLink>
-                  {index < adminLogins.length - 1 && (
-                    <span className="text-white/50">|</span>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Social Media Icons */}
-            <div className="flex items-center gap-2">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-              >
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-              >
-                <Youtube className="w-4 h-4" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Navigation */}
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm">
       <nav className="container mx-auto px-4">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-20 items-center justify-between gap-4">
           {/* Logo */}
-          <NavLink to="/" className="flex items-center space-x-2">
-            <div className="flex flex-col items-center">
-              <div className="text-2xl font-bold text-maroon leading-none">JH</div>
-              <div className="text-[10px] text-maroon font-medium uppercase tracking-wider">
-                Jainyo <span className="text-saffron">Hostels</span>
-              </div>
+          <NavLink to="/" className="flex items-center space-x-3 flex-shrink-0">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-teal">
+              <span className="text-xl font-bold text-white">JBF</span>
+            </div>
+            <div className="hidden sm:flex flex-col">
+              <span className="text-lg font-bold text-foreground leading-tight">
+                Jain Boarding Federation
+              </span>
+              <span className="text-xs text-muted-foreground">
+                Empowering Students Nationwide
+              </span>
             </div>
           </NavLink>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-1">
             {mainNavLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-                activeClassName="text-primary"
+                className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-colors"
+                activeClassName="text-primary bg-accent"
               >
                 {link.label}
               </NavLink>
             ))}
           </div>
 
-          {/* Right Side - Register & Language */}
-          <div className="flex items-center gap-3">
-            <NavLink to="/auth" className="hidden sm:block">
-              <Button className="bg-maroon hover:bg-maroon/90 text-maroon-foreground">
-                Register
-              </Button>
-            </NavLink>
+          {/* Right Side Actions */}
+          <div className="flex items-center gap-2">
+            {/* Portal Login Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2 hidden md:flex">
+                  <LogIn className="h-4 w-4" />
+                  <span>Portal Login</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                  Select Portal
+                </div>
+                <DropdownMenuSeparator />
+                {portalLogins.map((portal) => (
+                  <DropdownMenuItem key={portal.label} asChild>
+                    <NavLink
+                      to={portal.to}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <portal.icon className="h-4 w-4" />
+                      <span>{portal.label} Login</span>
+                    </NavLink>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-1 hidden sm:flex">
+                <Button variant="ghost" size="sm" className="gap-1 w-16">
                   <Globe className="h-4 w-4" />
-                  <span className="text-xs">{language}</span>
-                  <ChevronDown className="h-3 w-3" />
+                  <span className="text-xs font-medium">{language}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setLanguage("ENGLISH")}>
+                <DropdownMenuItem onClick={() => setLanguage("EN")}>
                   English
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage("हिंदी")}>
-                  हिंदी (Hindi)
+                <DropdownMenuItem onClick={() => setLanguage("HI")}>
+                  हिंदी
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage("ગુજરાતી")}>
-                  ગુજરાતી (Gujarati)
+                <DropdownMenuItem onClick={() => setLanguage("GU")}>
+                  ગુજરાતી
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* Register Button */}
+            <NavLink to="/auth" className="hidden sm:block">
+              <Button size="sm" className="bg-gradient-to-r from-primary to-teal hover:opacity-90">
+                Register
+              </Button>
+            </NavLink>
+
             {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2"
+            <Button
+              variant="ghost"
+              size="sm"
+              className="lg:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </Button>
           </div>
         </div>
       </nav>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t bg-white animate-fade-in">
-          <div className="container mx-auto px-4 py-4 flex flex-col space-y-3">
-            {/* Admin Logins Mobile */}
-            <div className="pb-3 border-b">
-              <p className="text-xs font-semibold text-muted-foreground mb-2">ADMIN PORTALS</p>
-              {adminLogins.map((link) => (
+        <div className="lg:hidden border-t bg-background animate-fade-in">
+          <div className="container mx-auto px-4 py-4 space-y-4">
+            {/* Portal Logins */}
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-2">
+                Quick Access
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {portalLogins.map((portal) => (
+                  <NavLink
+                    key={portal.label}
+                    to={portal.to}
+                    className="flex items-center gap-2 p-3 rounded-lg border bg-card hover:bg-accent transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <portal.icon className="h-4 w-4 text-primary" />
+                    <span className="text-sm font-medium">{portal.label}</span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+
+            {/* Main Navigation */}
+            <div className="space-y-1 pt-2 border-t">
+              {mainNavLinks.map((link) => (
                 <NavLink
-                  key={link.label}
+                  key={link.to}
                   to={link.to}
-                  className="text-sm font-medium text-maroon py-2 block"
+                  className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors"
+                  activeClassName="text-primary bg-accent"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
@@ -180,22 +172,14 @@ const Header = () => {
               ))}
             </div>
 
-            {/* Main Nav Mobile */}
-            {mainNavLinks.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className="text-sm font-medium text-foreground py-2"
-                activeClassName="text-primary"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </NavLink>
-            ))}
-
-            <NavLink to="/auth" onClick={() => setMobileMenuOpen(false)}>
-              <Button className="w-full bg-maroon hover:bg-maroon/90">
-                Register
+            {/* Mobile Register */}
+            <NavLink
+              to="/auth"
+              className="block sm:hidden"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Button className="w-full bg-gradient-to-r from-primary to-teal">
+                Register Now
               </Button>
             </NavLink>
           </div>
