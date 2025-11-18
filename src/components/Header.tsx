@@ -17,18 +17,20 @@ const Header = () => {
   const [language, setLanguage] = useState("EN");
 
   const portalLogins = [
-    { label: "Student", icon: UserCircle, to: "/auth" },
-    { label: "Hostel", icon: Building2, to: "/auth" },
-    { label: "Trustee", icon: Users, to: "/auth" },
-    { label: "Donor", icon: Heart, to: "/auth" },
+    { label: "Student", icon: UserCircle, to: "/portal-selection" },
+    { label: "Hostel", icon: Building2, to: "/portal-selection" },
+    { label: "Trustee", icon: Users, to: "/portal-selection" },
+    { label: "Donor", icon: Heart, to: "/portal-selection" },
   ];
 
   const mainNavLinks = [
     { to: "/", label: "Home" },
+    { to: "/about", label: "About Us" },
+    { to: "/institutions", label: "Hostels" },
     { to: "/institutions", label: "Institutions" },
-    { to: "/apply", label: "Apply Now" },
-    { to: "/donors", label: "Support Us" },
-    { to: "/events", label: "Events" },
+    { to: "/donors", label: "Donors" },
+    { to: "/trustees", label: "Trustees" },
+    { to: "/events", label: "Media" },
     { to: "/contact", label: "Contact" },
   ];
 
@@ -115,9 +117,9 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Register Button */}
+            {/* Register Button - Student/Parent Only */}
             <Button 
-              onClick={() => navigate('/portal-selection')}
+              onClick={() => navigate('/student/register')}
               size="sm" 
               className="hidden sm:flex bg-gradient-to-r from-primary to-teal hover:opacity-90"
             >
@@ -179,12 +181,12 @@ const Header = () => {
             {/* Mobile Register */}
             <Button 
               onClick={() => {
-                navigate('/portal-selection');
+                navigate('/student/register');
                 setMobileMenuOpen(false);
               }}
               className="w-full bg-gradient-to-r from-primary to-teal sm:hidden"
             >
-              Register Now
+              Register as Student
             </Button>
           </div>
         </div>
