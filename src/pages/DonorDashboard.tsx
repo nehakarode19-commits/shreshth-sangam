@@ -91,37 +91,37 @@ export default function DonorDashboard() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="border-l-4 border-l-primary">
+          <Card className="hover:shadow-md transition-shadow border-primary/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Total Donation</CardTitle>
               <DollarSign className="h-5 w-5 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-foreground">
+              <div className="text-3xl font-bold text-primary">
                 ₹{stats.totalDonations.toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground mt-1">Lifetime contributions</p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-accent">
+          <Card className="hover:shadow-md transition-shadow border-success/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Hostel Support</CardTitle>
-              <Building className="h-5 w-5 text-accent" />
+              <Building className="h-5 w-5 text-success" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-foreground">{stats.hostelsSupported}</div>
+              <div className="text-3xl font-bold text-success">{stats.hostelsSupported}</div>
               <p className="text-xs text-muted-foreground mt-1">Hostels benefited</p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-yellow-500">
+          <Card className="hover:shadow-md transition-shadow border-saffron/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Donation Level</CardTitle>
-              <Award className="h-5 w-5 text-yellow-600" />
+              <Award className="h-5 w-5 text-saffron" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-foreground uppercase">{stats.donationLevel}</div>
+              <div className="text-3xl font-bold text-saffron uppercase">{stats.donationLevel}</div>
               <p className="text-xs text-muted-foreground mt-1">Impact tier</p>
             </CardContent>
           </Card>
@@ -155,7 +155,7 @@ export default function DonorDashboard() {
                         <Button 
                           size="sm" 
                           onClick={() => handleDonate(project)}
-                          className="bg-primary hover:bg-primary/90"
+                          className="bg-maroon hover:bg-maroon/90 text-maroon-foreground"
                         >
                           Donate
                         </Button>

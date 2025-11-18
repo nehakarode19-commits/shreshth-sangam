@@ -101,43 +101,47 @@ export default function StudentDashboard() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
+          <Card className="border-primary/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Total Applications</CardTitle>
-              <FileText className="h-4 w-4 text-blue-500" />
+              <FileText className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{stats.total}</div>
+              <div className="text-2xl font-bold text-primary">{stats.total}</div>
+              <p className="text-xs text-muted-foreground">All applications</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-success/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Approved</CardTitle>
-              <Award className="h-4 w-4 text-green-500" />
+              <Award className="h-4 w-4 text-success" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.approved}</div>
+              <div className="text-2xl font-bold text-success">{stats.approved}</div>
+              <p className="text-xs text-muted-foreground">Successful applications</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-saffron/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Pending</CardTitle>
-              <FileText className="h-4 w-4 text-yellow-500" />
+              <FileText className="h-4 w-4 text-saffron" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
+              <div className="text-2xl font-bold text-saffron">{stats.pending}</div>
+              <p className="text-xs text-muted-foreground">Awaiting review</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-destructive/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Rejected</CardTitle>
-              <FileText className="h-4 w-4 text-red-500" />
+              <FileText className="h-4 w-4 text-destructive" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
+              <div className="text-2xl font-bold text-destructive">{stats.rejected}</div>
+              <p className="text-xs text-muted-foreground">Unsuccessful applications</p>
             </CardContent>
           </Card>
         </div>
