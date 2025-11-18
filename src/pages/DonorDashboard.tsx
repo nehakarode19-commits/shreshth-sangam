@@ -61,9 +61,9 @@ export default function DonorDashboard() {
 
   const sidebarItems = [
     { label: 'Dashboard', path: '/dashboard/donor', icon: <Home className="h-5 w-5" /> },
-    { label: 'Impact Reports', path: '/impact', icon: <FileText className="h-5 w-5" /> },
-    { label: 'Tax Receipts', path: '/receipts', icon: <Receipt className="h-5 w-5" /> },
-    { label: 'Volunteer Sign', path: '/volunteer', icon: <MessageSquare className="h-5 w-5" /> },
+    { label: 'Impact Reports', path: '/donor/impact-reports', icon: <FileText className="h-5 w-5" /> },
+    { label: 'Tax Receipts', path: '/donor/tax-receipts', icon: <Receipt className="h-5 w-5" /> },
+    { label: 'Volunteer Sign', path: '/donor/volunteer', icon: <MessageSquare className="h-5 w-5" /> },
   ];
 
   const projectsToSponsor = [
