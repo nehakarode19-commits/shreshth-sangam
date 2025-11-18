@@ -94,53 +94,47 @@ export default function TrusteeDashboard() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
+          <Card className="border-primary/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Total Hostels Managed</CardTitle>
               <Home className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.hostelsManaged}</div>
+              <div className="text-2xl font-bold text-primary">{stats.hostelsManaged}</div>
+              <p className="text-xs text-muted-foreground">Active hostels</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-success/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Active Hostels</CardTitle>
-              <Building className="h-4 w-4 text-green-500" />
+              <Building className="h-4 w-4 text-success" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.hostelsManaged}</div>
+              <div className="text-2xl font-bold text-success">{stats.hostelsManaged}</div>
+              <p className="text-xs text-muted-foreground">Currently operational</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-saffron/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Dormant Hostels</CardTitle>
-              <Clock className="h-4 w-4 text-orange-500" />
+              <Clock className="h-4 w-4 text-saffron" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">0</div>
+              <div className="text-2xl font-bold text-saffron">0</div>
+              <p className="text-xs text-muted-foreground">Inactive facilities</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-teal/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Active Hostels</CardTitle>
-              <Building className="h-4 w-4 text-green-500" />
+              <CardTitle className="text-sm font-medium">Total Hostel Beds</CardTitle>
+              <Users className="h-4 w-4 text-teal" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">200+</div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Dormant Hostels</CardTitle>
-              <Clock className="h-4 w-4 text-orange-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-orange-600">15</div>
+              <div className="text-2xl font-bold text-teal">0</div>
+              <p className="text-xs text-muted-foreground">Available capacity</p>
             </CardContent>
           </Card>
 
