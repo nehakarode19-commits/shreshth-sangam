@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const step1Schema = z.object({
   hostelName: z.string().min(2, "Hostel name is required"),
@@ -31,6 +32,7 @@ export default function HostelRegistrationForm() {
   const [formData, setFormData] = useState<any>({});
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const form = useForm({
     resolver: zodResolver(step1Schema),
@@ -46,8 +48,17 @@ export default function HostelRegistrationForm() {
   const handleFinalSubmit = async (data: any) => {
     const finalData = { ...formData, ...data };
     
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to complete registration.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     try {
-      // Create hostel
+      // Create hostel with admin_id
       const { data: hostelData, error: hostelError } = await supabase
         .from('hostels')
         .insert({
@@ -68,7 +79,8 @@ export default function HostelRegistrationForm() {
           monthly_operational_cost: parseFloat(finalData.monthlyExpenses) || 0,
           govt_support: finalData.govtAid === 'yes',
           type: 'hostel',
-          status: 'pending'
+          status: 'pending',
+          admin_id: user.id
         })
         .select()
         .single();
@@ -83,14 +95,16 @@ export default function HostelRegistrationForm() {
           email: finalData.trusteeEmail,
           designation: finalData.trusteeDesignation,
           hostel_id: hostelData.id,
+          user_id: user.id
         });
       }
 
       toast({
         title: "Registration Successful!",
-        description: "Your hostel has been registered. Please wait for approval.",
+        description: "Your hostel has been registered successfully.",
       });
 
+      // Navigate to hostel admin dashboard
       navigate('/dashboard/hostel-admin');
     } catch (error: any) {
       toast({
