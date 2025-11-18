@@ -70,7 +70,7 @@ const Header = () => {
           <div className="flex items-center gap-2">
             {/* Portal Login Button */}
             <Button 
-              onClick={() => navigate('/portal-selection')}
+              onClick={() => window.open('/portal-selection', '_blank', 'noopener,noreferrer')}
               variant="outline" 
               size="sm" 
               className="gap-2 hidden md:flex"
@@ -129,7 +129,7 @@ const Header = () => {
             {/* Portal Login Button for Mobile */}
             <Button 
               onClick={() => {
-                navigate('/portal-selection');
+                window.open('/portal-selection', '_blank', 'noopener,noreferrer');
                 setMobileMenuOpen(false);
               }}
               variant="outline"
