@@ -24,8 +24,8 @@ export default function DonorDashboard() {
   });
 
   useEffect(() => {
-    if (userRole !== 'donor') {
-      navigate('/');
+    if (userRole && userRole !== 'donor') {
+      navigate('/portal-selection');
     }
   }, [userRole, navigate]);
 

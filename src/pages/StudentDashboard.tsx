@@ -31,8 +31,8 @@ export default function StudentDashboard() {
   };
 
   useEffect(() => {
-    if (userRole !== 'student') {
-      navigate('/');
+    if (userRole && userRole !== 'student') {
+      navigate('/portal-selection');
     }
   }, [userRole, navigate]);
 

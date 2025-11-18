@@ -32,8 +32,8 @@ export default function TrusteeDashboard() {
   };
 
   useEffect(() => {
-    if (userRole !== 'trustee') {
-      navigate('/');
+    if (userRole && userRole !== 'trustee') {
+      navigate('/portal-selection');
     }
   }, [userRole, navigate]);
 
