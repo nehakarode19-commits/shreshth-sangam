@@ -2,44 +2,44 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users } from "lucide-react";
+import trustee1 from "@/assets/committee/trustee-1.jpg";
+import trustee2 from "@/assets/committee/trustee-2.jpg";
+import trustee3 from "@/assets/committee/trustee-3.jpg";
+import trustee4 from "@/assets/committee/trustee-4.jpg";
+import trustee5 from "@/assets/committee/trustee-5.jpg";
+import trustee6 from "@/assets/committee/trustee-6.jpg";
 
 const Committee = () => {
   const boardMembers = [
     {
-      name: "Rajesh Kumar Jain",
+      title: "Trustee 1",
       position: "President",
-      initials: "RK",
-      color: "bg-maroon"
+      image: trustee1
     },
     {
-      name: "Priya Mehta",
+      title: "Trustee 2",
       position: "Vice President",
-      initials: "PM",
-      color: "bg-maroon/90"
+      image: trustee2
     },
     {
-      name: "Amit Shah",
+      title: "Trustee 3",
       position: "General Secretary",
-      initials: "AS",
-      color: "bg-maroon/80"
+      image: trustee3
     },
     {
-      name: "Sunita Agarwal",
+      title: "Trustee 4",
       position: "Treasurer",
-      initials: "SA",
-      color: "bg-maroon/70"
+      image: trustee4
     },
     {
-      name: "Vikram Singh",
+      title: "Trustee 5",
       position: "Executive Member",
-      initials: "VS",
-      color: "bg-maroon/60"
+      image: trustee5
     },
     {
-      name: "Anjali Patel",
+      title: "Trustee 6",
       position: "Executive Member",
-      initials: "AP",
-      color: "bg-maroon/50"
+      image: trustee6
     }
   ];
 
@@ -77,22 +77,20 @@ const Committee = () => {
                   className="group hover:shadow-elegant transition-all duration-300 cursor-pointer hover:-translate-y-1 overflow-hidden"
                 >
                   <CardContent className="p-0">
-                    {/* Avatar Section */}
-                    <div className="relative h-64 flex items-center justify-center bg-gradient-to-br from-maroon to-maroon/80 overflow-hidden">
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.1),transparent)]" />
-                      <div className="relative">
-                        <div className={`${member.color} w-32 h-32 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300`}>
-                          <span className="text-5xl font-bold text-white">
-                            {member.initials}
-                          </span>
-                        </div>
-                      </div>
+                    {/* Image Section */}
+                    <div className="relative h-64 overflow-hidden">
+                      <img 
+                        src={member.image} 
+                        alt={`${member.title} - ${member.position}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-maroon/60 to-transparent" />
                     </div>
                     
                     {/* Info Section */}
                     <div className="p-6 bg-card text-center">
                       <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-maroon transition-colors">
-                        {member.name}
+                        {member.title}
                       </h3>
                       <p className="text-sm font-semibold text-maroon uppercase tracking-wide">
                         {member.position}
