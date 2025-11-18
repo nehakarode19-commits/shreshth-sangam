@@ -262,11 +262,47 @@ const Auth = () => {
   const mode = searchParams.get('mode') || 'signin';
   const [isSignUp, setIsSignUp] = useState(mode === 'signup');
 
-  // Redirect if already logged in
+  // Redirect if already logged in to appropriate dashboard
   useEffect(() => {
-    if (user && !authLoading) {
-      navigate('/');
-    }
+    const redirectLoggedInUser = async () => {
+      if (user && !authLoading) {
+        // Fetch user role
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .single();
+
+        const role = roleData?.role;
+        
+        // Redirect based on role
+        switch (role) {
+          case 'student':
+          case 'parent':
+            navigate('/dashboard/student');
+            break;
+          case 'hostel_admin':
+            navigate('/dashboard/hostel-admin');
+            break;
+          case 'institution_admin':
+            navigate('/dashboard/institution-admin');
+            break;
+          case 'donor':
+            navigate('/dashboard/donor');
+            break;
+          case 'trustee':
+            navigate('/dashboard/trustee');
+            break;
+          case 'super_admin':
+            navigate('/dashboard/super-admin');
+            break;
+          default:
+            navigate('/');
+        }
+      }
+    };
+    
+    redirectLoggedInUser();
   }, [user, authLoading, navigate]);
 
   // Redirect to registration forms for new users
