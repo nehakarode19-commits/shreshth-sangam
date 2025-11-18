@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -15,9 +15,13 @@ import { NavLink } from "@/components/NavLink";
 
 const Auth = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
+  
+  const portalType = searchParams.get('portal') || 'student';
+  const mode = searchParams.get('mode') || 'signin';
+  const [isSignUp, setIsSignUp] = useState(mode === 'signup');
 
   // Redirect if already logged in
   useEffect(() => {
