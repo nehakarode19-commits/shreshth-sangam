@@ -44,7 +44,6 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/institutions" element={<Institutions />} />
@@ -83,7 +82,6 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
