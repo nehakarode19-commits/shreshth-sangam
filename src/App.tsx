@@ -25,6 +25,15 @@ import TrusteeDashboard from "./pages/TrusteeDashboard";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import HostelRegistration from "./pages/HostelRegistration";
 import StudentRegistration from "./pages/StudentRegistration";
+import ImpactReports from "./pages/donor/ImpactReports";
+import TaxReceipts from "./pages/donor/TaxReceipts";
+import VolunteerSign from "./pages/donor/VolunteerSign";
+import TrusteeInstitutions from "./pages/trustee/Institutions";
+import TrusteeScholarships from "./pages/trustee/Scholarships";
+import TrusteeLoans from "./pages/trustee/Loans";
+import TrusteeNutrition from "./pages/trustee/Nutrition";
+import TrusteeResources from "./pages/trustee/Resources";
+import TrusteeHelp from "./pages/trustee/Help";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +65,20 @@ const App = () => (
             <Route path="/dashboard/super-admin" element={<SuperAdminDashboard />} />
             <Route path="/hostel/register" element={<HostelRegistration />} />
             <Route path="/student/register" element={<StudentRegistration />} />
+            
+            {/* Donor Portal Routes */}
+            <Route path="/donor/impact-reports" element={<ImpactReports />} />
+            <Route path="/donor/tax-receipts" element={<TaxReceipts />} />
+            <Route path="/donor/volunteer" element={<VolunteerSign />} />
+            
+            {/* Trustee Portal Routes */}
+            <Route path="/trustee/institutions" element={<TrusteeInstitutions />} />
+            <Route path="/trustee/scholarships" element={<TrusteeScholarships />} />
+            <Route path="/trustee/loans" element={<TrusteeLoans />} />
+            <Route path="/trustee/nutrition" element={<TrusteeNutrition />} />
+            <Route path="/trustee/resources" element={<TrusteeResources />} />
+            <Route path="/trustee/help" element={<TrusteeHelp />} />
+            
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

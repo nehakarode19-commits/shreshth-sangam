@@ -61,12 +61,12 @@ export default function TrusteeDashboard() {
 
   const sidebarItems = [
     { label: 'Dashboard', path: '/dashboard/trustee', icon: <Home className="h-5 w-5" /> },
-    { label: 'Institution', path: '/institutions', icon: <Building className="h-5 w-5" /> },
-    { label: 'Avail Scholarship', path: '/scholarships', icon: <Book className="h-5 w-5" /> },
-    { label: 'Loan Helpdesk', path: '/loans', icon: <FileText className="h-5 w-5" /> },
-    { label: 'Nutrition Support', path: '/nutrition', icon: <Shield className="h-5 w-5" /> },
-    { label: 'Learning Resources', path: '/resources', icon: <Book className="h-5 w-5" /> },
-    { label: 'Help', path: '/help', icon: <MessageSquare className="h-5 w-5" /> },
+    { label: 'Institution', path: '/trustee/institutions', icon: <Building className="h-5 w-5" /> },
+    { label: 'Avail Scholarship', path: '/trustee/scholarships', icon: <Book className="h-5 w-5" /> },
+    { label: 'Loan Helpdesk', path: '/trustee/loans', icon: <FileText className="h-5 w-5" /> },
+    { label: 'Nutrition Support', path: '/trustee/nutrition', icon: <Shield className="h-5 w-5" /> },
+    { label: 'Learning Resources', path: '/trustee/resources', icon: <Book className="h-5 w-5" /> },
+    { label: 'Help', path: '/trustee/help', icon: <MessageSquare className="h-5 w-5" /> },
   ];
 
   const applicationTimeline = [
@@ -91,11 +91,31 @@ export default function TrusteeDashboard() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Hostels</CardTitle>
-              <Home className="h-4 w-4 text-blue-500" />
+              <CardTitle className="text-sm font-medium">Total Hostels Managed</CardTitle>
+              <Home className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">150</div>
+              <div className="text-2xl font-bold">{stats.hostelsManaged}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">Active Hostels</CardTitle>
+              <Building className="h-4 w-4 text-green-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">{stats.hostelsManaged}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">Dormant Hostels</CardTitle>
+              <Clock className="h-4 w-4 text-orange-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-600">0</div>
             </CardContent>
           </Card>
 
