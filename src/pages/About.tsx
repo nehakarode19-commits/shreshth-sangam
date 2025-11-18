@@ -14,8 +14,8 @@ const About = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center animate-fade-in">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">About Jain Boarding Federation</h1>
-              <p className="text-xl text-muted-foreground">
-                Connecting trustees, students, parents, and donors to strengthen Jain boarding education across India.
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                The Jain Boarding Federation is a unified platform that connects Jain boarding schools, hostels, students, parents, trustees, and donors across India. Our mission is to provide every Jain child with access to quality education, strong values, and a supportive living environment through well-managed boarding institutions.
               </p>
             </div>
           </div>
@@ -68,38 +68,91 @@ const About = () => {
           </div>
         </section>
 
-        {/* What We Do */}
+        {/* What We Offer */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12">What We Do</h2>
-              <div className="grid md:grid-cols-3 gap-8">
+              <h2 className="text-3xl font-bold text-center mb-12">What We Offer</h2>
+              <div className="grid md:grid-cols-2 gap-8">
                 <Card className="card-elevated">
-                  <CardContent className="pt-6 text-center">
-                    <Users className="w-12 h-12 mx-auto mb-4 text-primary" />
-                    <h3 className="text-xl font-semibold mb-3">Connect Communities</h3>
+                  <CardContent className="pt-6">
+                    <Users className="w-12 h-12 mb-4 text-primary" />
+                    <h3 className="text-xl font-semibold mb-3">Centralized Directory of Hostels</h3>
                     <p className="text-muted-foreground">
-                      We bring together students, parents, trustees, and donors in a unified platform.
+                      Comprehensive listings of Jain boarding schools and hostels across India, making it easy to find the right institution for your child.
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card className="card-elevated">
-                  <CardContent className="pt-6 text-center">
-                    <Heart className="w-12 h-12 mx-auto mb-4 text-primary" />
-                    <h3 className="text-xl font-semibold mb-3">Facilitate Support</h3>
+                  <CardContent className="pt-6">
+                    <Heart className="w-12 h-12 mb-4 text-primary" />
+                    <h3 className="text-xl font-semibold mb-3">Tools for Students and Parents</h3>
                     <p className="text-muted-foreground">
-                      We make it easy for donors to support institutions and students in need.
+                      Easy application processes, information resources, and support systems to help families make informed decisions.
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card className="card-elevated">
-                  <CardContent className="pt-6 text-center">
-                    <TrendingUp className="w-12 h-12 mx-auto mb-4 text-primary" />
-                    <h3 className="text-xl font-semibold mb-3">Empower Growth</h3>
+                  <CardContent className="pt-6">
+                    <TrendingUp className="w-12 h-12 mb-4 text-primary" />
+                    <h3 className="text-xl font-semibold mb-3">Resources for Trustees</h3>
                     <p className="text-muted-foreground">
-                      We provide resources and opportunities for students to achieve their full potential.
+                      Management tools, best practices, and collaborative opportunities to enhance the quality of boarding institutions.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="card-elevated">
+                  <CardContent className="pt-6">
+                    <Award className="w-12 h-12 mb-4 text-primary" />
+                    <h3 className="text-xl font-semibold mb-3">Transparent Donation Opportunities</h3>
+                    <p className="text-muted-foreground">
+                      Clear pathways for donors to contribute meaningfully, with full transparency on how donations are utilized.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Our Values */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-center mb-12">What We Stand For</h2>
+              <div className="grid md:grid-cols-4 gap-6">
+                <Card className="card-elevated text-center">
+                  <CardContent className="pt-6">
+                    <h3 className="text-xl font-bold mb-2 text-primary">Unity</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Bringing the Jain community together
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="card-elevated text-center">
+                  <CardContent className="pt-6">
+                    <h3 className="text-xl font-bold mb-2 text-primary">Transparency</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Clear, honest communication
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="card-elevated text-center">
+                  <CardContent className="pt-6">
+                    <h3 className="text-xl font-bold mb-2 text-primary">Values</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Preserving Jain principles
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="card-elevated text-center">
+                  <CardContent className="pt-6">
+                    <h3 className="text-xl font-bold mb-2 text-primary">Upliftment</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Empowering the community
                     </p>
                   </CardContent>
                 </Card>
@@ -109,14 +162,12 @@ const About = () => {
         </section>
 
         {/* Our Impact */}
-        <section className="py-16">
+        <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-6">Our Impact</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Over 25 years, we've built a network of 150+ boarding institutions, helping more than 
-                12,000 students access quality education while preserving Jain values and strengthening 
-                rural communities across India.
+                Working together to build a stronger future for the Jain community. Over 25 years, we have built a network of 150+ boarding institutions, helping more than 12,000 students access quality education while preserving Jain values and strengthening rural communities across India.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
                 <div className="text-center">
