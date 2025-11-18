@@ -26,6 +26,11 @@ export default function TrusteeDashboard() {
     complianceScore: 0,
   });
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
   useEffect(() => {
     if (userRole !== 'trustee') {
       navigate('/');

@@ -37,6 +37,7 @@ import TrusteeHelp from "./pages/trustee/Help";
 
 const queryClient = new QueryClient();
 
+// Application root component with AuthProvider wrapping all routes
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>

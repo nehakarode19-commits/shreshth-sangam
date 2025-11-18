@@ -25,6 +25,11 @@ export default function StudentDashboard() {
     rejected: 0,
   });
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
   useEffect(() => {
     if (userRole !== 'student') {
       navigate('/');
