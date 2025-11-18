@@ -19,23 +19,43 @@ const baseAuthSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const signUpSchema = baseAuthSchema.extend({
+// Base signup schema without refinement (so it can be extended)
+const baseSignUpFields = {
   fullName: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name too long"),
   phone: z.string().regex(/^\+?[\d\s-()]{10,}$/, "Invalid phone number"),
   confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+};
 
-const trusteeSignUpSchema = signUpSchema.extend({
+const signUpSchema = baseAuthSchema.extend(baseSignUpFields).refine(
+  (data) => data.password === data.confirmPassword,
+  {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  }
+);
+
+const trusteeSignUpSchema = baseAuthSchema.extend({
+  ...baseSignUpFields,
   institutionName: z.string().trim().min(2, "Institution name required").max(200, "Name too long"),
   designation: z.string().trim().min(2, "Designation required").max(100, "Designation too long"),
-});
+}).refine(
+  (data) => data.password === data.confirmPassword,
+  {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  }
+);
 
-const donorSignUpSchema = signUpSchema.extend({
+const donorSignUpSchema = baseAuthSchema.extend({
+  ...baseSignUpFields,
   country: z.string().optional(),
-});
+}).refine(
+  (data) => data.password === data.confirmPassword,
+  {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  }
+);
 
 // Auth form component extracted outside to avoid hoisting issues
 const AuthFormComponent = ({ 
