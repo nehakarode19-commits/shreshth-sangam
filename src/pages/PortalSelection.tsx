@@ -73,14 +73,14 @@ const PortalSelection = () => {
                   </CardHeader>
                   <CardContent className="flex gap-3">
                     <Button
-                      onClick={() => navigate(`/auth?portal=${portal.id}&mode=signup`)}
+                      onClick={() => window.open(`/auth?portal=${portal.id}&mode=signup`, '_blank', 'noopener,noreferrer')}
                       className="flex-1 shadow-md hover:shadow-lg transition-shadow"
                       size="lg"
                     >
                       Sign Up
                     </Button>
                     <Button
-                      onClick={() => navigate(`/auth?portal=${portal.id}&mode=signin`)}
+                      onClick={() => window.open(`/auth?portal=${portal.id}&mode=signin`, '_blank', 'noopener,noreferrer')}
                       variant="outline"
                       className="flex-1 hover:bg-muted transition-colors"
                       size="lg"
