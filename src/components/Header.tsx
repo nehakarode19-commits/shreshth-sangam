@@ -30,6 +30,7 @@ const Header = () => {
     { to: "/institutions", label: "Institutions" },
     { to: "/donors", label: "Donors" },
     { to: "/trustees", label: "Trustees" },
+    { to: "/committee", label: "Committee" },
     { to: "/events", label: "Media" },
     { to: "/contact", label: "Contact" },
   ];
@@ -40,7 +41,7 @@ const Header = () => {
         <div className="flex h-20 items-center justify-between gap-4">
           {/* Logo */}
           <NavLink to="/" className="flex items-center flex-shrink-0">
-            <img src={jainyoLogo} alt="Jainyo Hostels" className="h-16 w-auto" />
+            <img src={jainyoLogo} alt="Jainyo Hostels" className="h-20 w-auto" />
             <div className="hidden sm:flex flex-col">
               <span className="text-lg font-bold text-foreground leading-tight">
                 Jain Boarding Federation
