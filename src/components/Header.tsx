@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogIn, UserCircle, Building2, Heart, Users, Globe } from "lucide-react";
+import jainyoLogo from "@/assets/jainyo-logo.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,10 +39,8 @@ const Header = () => {
       <nav className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between gap-4">
           {/* Logo */}
-          <NavLink to="/" className="flex items-center space-x-3 flex-shrink-0">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-teal">
-              <span className="text-xl font-bold text-white">JBF</span>
-            </div>
+          <NavLink to="/" className="flex items-center flex-shrink-0">
+            <img src={jainyoLogo} alt="Jainyo Hostels" className="h-16 w-auto" />
             <div className="hidden sm:flex flex-col">
               <span className="text-lg font-bold text-foreground leading-tight">
                 Jain Boarding Federation
