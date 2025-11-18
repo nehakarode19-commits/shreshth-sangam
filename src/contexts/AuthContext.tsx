@@ -65,7 +65,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (error) throw error;
       setUserRole(data?.role || null);
     } catch (error) {
-      console.error('Error fetching user role:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error fetching user role:', error);
+      }
       setUserRole(null);
     } finally {
       setLoading(false);
@@ -80,7 +82,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUserRole(null);
       navigate('/');
     } catch (error) {
-      console.error('Error signing out:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error signing out:', error);
+      }
     }
   };
 
