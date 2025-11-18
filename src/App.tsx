@@ -16,6 +16,12 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
+import StudentDashboard from "./pages/StudentDashboard";
+import HostelAdminDashboard from "./pages/HostelAdminDashboard";
+import InstitutionAdminDashboard from "./pages/InstitutionAdminDashboard";
+import DonorDashboard from "./pages/DonorDashboard";
+import TrusteeDashboard from "./pages/TrusteeDashboard";
+import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +44,12 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/dashboard/student" element={<StudentDashboard />} />
+            <Route path="/dashboard/hostel-admin" element={<HostelAdminDashboard />} />
+            <Route path="/dashboard/institution-admin" element={<InstitutionAdminDashboard />} />
+            <Route path="/dashboard/donor" element={<DonorDashboard />} />
+            <Route path="/dashboard/trustee" element={<TrusteeDashboard />} />
+            <Route path="/dashboard/super-admin" element={<SuperAdminDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
