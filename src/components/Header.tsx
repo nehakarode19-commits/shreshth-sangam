@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogIn, UserCircle, Building2, Heart, Users, Globe } from "lucide-react";
@@ -11,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [language, setLanguage] = useState("EN");
 
@@ -114,11 +116,13 @@ const Header = () => {
             </DropdownMenu>
 
             {/* Register Button */}
-            <NavLink to="/auth" className="hidden sm:block">
-              <Button size="sm" className="bg-gradient-to-r from-primary to-teal hover:opacity-90">
-                Register
-              </Button>
-            </NavLink>
+            <Button 
+              onClick={() => navigate('/portal-selection')}
+              size="sm" 
+              className="hidden sm:flex bg-gradient-to-r from-primary to-teal hover:opacity-90"
+            >
+              Register
+            </Button>
 
             {/* Mobile Menu Button */}
             <Button
@@ -173,15 +177,15 @@ const Header = () => {
             </div>
 
             {/* Mobile Register */}
-            <NavLink
-              to="/auth"
-              className="block sm:hidden"
-              onClick={() => setMobileMenuOpen(false)}
+            <Button 
+              onClick={() => {
+                navigate('/portal-selection');
+                setMobileMenuOpen(false);
+              }}
+              className="w-full bg-gradient-to-r from-primary to-teal sm:hidden"
             >
-              <Button className="w-full bg-gradient-to-r from-primary to-teal">
-                Register Now
-              </Button>
-            </NavLink>
+              Register Now
+            </Button>
           </div>
         </div>
       )}

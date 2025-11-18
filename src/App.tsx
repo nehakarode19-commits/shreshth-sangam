@@ -12,6 +12,7 @@ import Donors from "./pages/Donors";
 import Events from "./pages/Events";
 import Trustees from "./pages/Trustees";
 import Auth from "./pages/Auth";
+import PortalSelection from "./pages/PortalSelection";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/donors" element={<Donors />} />
             <Route path="/events" element={<Events />} />
             <Route path="/trustees" element={<Trustees />} />
+            <Route path="/portal-selection" element={<PortalSelection />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
