@@ -69,32 +69,16 @@ const Header = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-2">
-            {/* Portal Login Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2 hidden md:flex">
-                  <LogIn className="h-4 w-4" />
-                  <span>Portal Login</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                  Select Portal
-                </div>
-                <DropdownMenuSeparator />
-                {portalLogins.map((portal) => (
-                  <DropdownMenuItem key={portal.label} asChild>
-                    <NavLink
-                      to={portal.to}
-                      className="flex items-center gap-2 cursor-pointer"
-                    >
-                      <portal.icon className="h-4 w-4" />
-                      <span>{portal.label} Login</span>
-                    </NavLink>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Portal Login Button */}
+            <Button 
+              onClick={() => navigate('/portal-selection')}
+              variant="outline" 
+              size="sm" 
+              className="gap-2 hidden md:flex"
+            >
+              <LogIn className="h-4 w-4" />
+              <span>Portal Login</span>
+            </Button>
 
             {/* Language Selector */}
             <DropdownMenu>
@@ -143,25 +127,18 @@ const Header = () => {
       {mobileMenuOpen && (
         <div className="lg:hidden border-t bg-background animate-fade-in">
           <div className="container mx-auto px-4 py-4 space-y-4">
-            {/* Portal Logins */}
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-2">
-                Quick Access
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                {portalLogins.map((portal) => (
-                  <NavLink
-                    key={portal.label}
-                    to={portal.to}
-                    className="flex items-center gap-2 p-3 rounded-lg border bg-card hover:bg-accent transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <portal.icon className="h-4 w-4 text-primary" />
-                    <span className="text-sm font-medium">{portal.label}</span>
-                  </NavLink>
-                ))}
-              </div>
-            </div>
+            {/* Portal Login Button for Mobile */}
+            <Button 
+              onClick={() => {
+                navigate('/portal-selection');
+                setMobileMenuOpen(false);
+              }}
+              variant="outline"
+              className="w-full gap-2"
+            >
+              <LogIn className="h-4 w-4" />
+              <span>Portal Login</span>
+            </Button>
 
             {/* Main Navigation */}
             <div className="space-y-1 pt-2 border-t">
