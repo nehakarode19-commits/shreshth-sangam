@@ -23,6 +23,15 @@ export default function DashboardLayout({
   const navigate = useNavigate();
   const { signOut } = useAuth();
 
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      // Error already handled in signOut
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-muted/30">
       {/* Sidebar */}
@@ -70,7 +79,7 @@ export default function DashboardLayout({
               <Button variant="ghost" size="icon">
                 <Bell className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={signOut}>
+              <Button variant="ghost" size="icon" onClick={handleSignOut}>
                 <LogOut className="h-5 w-5" />
               </Button>
             </div>
