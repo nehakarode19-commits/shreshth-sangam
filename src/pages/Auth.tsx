@@ -82,8 +82,41 @@ const Auth = () => {
         }
 
         if (data.user) {
+          // Fetch user role and navigate to appropriate dashboard
+          const { data: roleData } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', data.user.id)
+            .single();
+
+          const role = roleData?.role;
+          
           toast.success('Signed in successfully!');
-          navigate('/');
+
+          // Navigate based on role
+          switch (role) {
+            case 'student':
+            case 'parent':
+              navigate('/dashboard/student');
+              break;
+            case 'hostel_admin':
+              navigate('/dashboard/hostel-admin');
+              break;
+            case 'institution_admin':
+              navigate('/dashboard/institution-admin');
+              break;
+            case 'donor':
+              navigate('/dashboard/donor');
+              break;
+            case 'trustee':
+              navigate('/dashboard/trustee');
+              break;
+            case 'super_admin':
+              navigate('/dashboard/super-admin');
+              break;
+            default:
+              navigate('/');
+          }
         }
       }
     } catch (error: any) {
