@@ -26,7 +26,6 @@ const Header = () => {
   const mainNavLinks = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About Us" },
-    { to: "/institutions", label: "Hostels" },
     { to: "/institutions", label: "Institutions" },
     { to: "/donors", label: "Donors" },
     { to: "/trustees", label: "Trustees" },
