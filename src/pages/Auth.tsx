@@ -25,13 +25,17 @@ const AuthFormComponent = ({
   loading: boolean;
   portalType: string;
   portalTitle: string;
-  onSubmit: (email: string, password: string, fullName: string, phone: string) => void;
+  onSubmit: (email: string, password: string, fullName: string, phone: string, institutionName?: string, designation?: string, country?: string) => void;
   onToggleMode: () => void;
 }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
+  const [institutionName, setInstitutionName] = useState('');
+  const [designation, setDesignation] = useState('');
+  const [country, setCountry] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +56,12 @@ const AuthFormComponent = ({
       return;
     }
 
-    onSubmit(email, password, fullName, phone);
+    if (isSignUp && password !== confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
+    onSubmit(email, password, fullName, phone, institutionName, designation, country);
   };
 
   return (
@@ -71,15 +80,58 @@ const AuthFormComponent = ({
             />
           </div>
           <div>
-            <Label htmlFor="phone">Phone Number</Label>
+            <Label htmlFor="phone">Phone Number *</Label>
             <Input
               id="phone"
               type="tel"
               placeholder="+91 XXXXX XXXXX"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              required
             />
           </div>
+          
+          {/* Trustee-specific fields */}
+          {portalType === 'trustee' && (
+            <>
+              <div>
+                <Label htmlFor="institutionName">Institution / Hostel Name *</Label>
+                <Input
+                  id="institutionName"
+                  type="text"
+                  placeholder="Enter institution or hostel name"
+                  value={institutionName}
+                  onChange={(e) => setInstitutionName(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="designation">Designation / Role *</Label>
+                <Input
+                  id="designation"
+                  type="text"
+                  placeholder="e.g., Managing Trustee, Board Member"
+                  value={designation}
+                  onChange={(e) => setDesignation(e.target.value)}
+                  required
+                />
+              </div>
+            </>
+          )}
+          
+          {/* Donor-specific fields */}
+          {portalType === 'donor' && (
+            <div>
+              <Label htmlFor="country">Country (Optional)</Label>
+              <Input
+                id="country"
+                type="text"
+                placeholder="e.g., India, USA"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              />
+            </div>
+          )}
         </>
       )}
       <div>
@@ -104,6 +156,20 @@ const AuthFormComponent = ({
           required
         />
       </div>
+      
+      {isSignUp && (
+        <div>
+          <Label htmlFor="confirmPassword">Confirm Password *</Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            placeholder="Re-enter your password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        </div>
+      )}
 
       <Button type="submit" className="w-full" disabled={loading}>
         {loading ? 'Please wait...' : isSignUp ? `Create ${portalTitle} Account` : `Sign In to ${portalTitle}`}
@@ -179,7 +245,10 @@ const Auth = () => {
     email: string,
     password: string,
     fullName: string,
-    phone: string
+    phone: string,
+    institutionName?: string,
+    designation?: string,
+    country?: string
   ) => {
     try {
       setLoading(true);
@@ -209,9 +278,54 @@ const Auth = () => {
         }
 
         if (data.user) {
+          // Create additional records for trustee or donor
+          if (portalType === 'trustee' && institutionName && designation) {
+            const { error: trusteeError } = await supabase
+              .from('trustees')
+              .insert({
+                user_id: data.user.id,
+                name: fullName,
+                email: email,
+                phone: phone,
+                designation: designation,
+                // Store institution/hostel name in a custom field or link to actual institution
+                // For now, we'll add this as a note in designation
+              });
+
+            if (trusteeError) {
+              console.error('Error creating trustee record:', trusteeError);
+            }
+          } else if (portalType === 'donor') {
+            const { error: donorError } = await supabase
+              .from('donors')
+              .insert({
+                user_id: data.user.id,
+                name: fullName,
+                email: email,
+                phone: phone,
+                total_donated: 0,
+                impact_level: 'bronze',
+              });
+
+            if (donorError) {
+              console.error('Error creating donor record:', donorError);
+            }
+          }
+
           toast.success('Account created successfully! Redirecting...');
+          
+          // Navigate to appropriate dashboard
           setTimeout(() => {
-            navigate('/');
+            switch (portalInfo.role) {
+              case 'trustee':
+                navigate('/dashboard/trustee');
+                break;
+              case 'donor':
+                navigate('/dashboard/donor');
+                break;
+              default:
+                navigate('/');
+            }
           }, 1000);
         }
       } else {
@@ -295,31 +409,31 @@ const Auth = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 bg-gradient-to-br from-background to-muted py-12">
+      <main className="flex-1 bg-gradient-to-br from-background via-muted/30 to-background py-12">
         <div className="container mx-auto px-4 max-w-md">
-          <div className="text-center mb-8">
-            <NavLink to="/portal-selection" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-4">
+          <div className="text-center mb-8 animate-fade-in">
+            <NavLink to="/portal-selection" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-1" />
               Back to Portal Selection
             </NavLink>
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <PortalIcon className="w-8 h-8 text-white" />
+              <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg`}>
+                <PortalIcon className="w-10 h-10 text-white" />
               </div>
             </div>
             <h1 className="text-3xl font-bold mb-2">
               {portalInfo.title}
             </h1>
             <p className="text-muted-foreground">
-              {isSignUp ? 'Create your account' : 'Sign in to continue'}
+              {isSignUp ? 'Create your account to get started' : 'Welcome back! Sign in to continue'}
             </p>
           </div>
 
-          <Card className="shadow-lg">
+          <Card className="shadow-xl border-2">
             <CardHeader>
-              <CardTitle>{isSignUp ? 'Sign Up' : 'Sign In'}</CardTitle>
+              <CardTitle className="text-xl">{isSignUp ? 'Create Account' : 'Sign In'}</CardTitle>
               <CardDescription>
-                {isSignUp ? 'Fill in your details to create an account' : 'Enter your credentials to access your dashboard'}
+                {isSignUp ? 'Fill in your details to create your account' : 'Enter your credentials to access your dashboard'}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -337,9 +451,9 @@ const Auth = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
               By continuing, you agree to our{' '}
-              <a href="/terms" className="text-primary hover:underline">Terms of Service</a>
+              <a href="/terms" className="text-primary hover:underline font-medium">Terms of Service</a>
               {' '}and{' '}
-              <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>
+              <a href="/privacy" className="text-primary hover:underline font-medium">Privacy Policy</a>
             </p>
           </div>
         </div>

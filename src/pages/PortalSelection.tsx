@@ -12,28 +12,28 @@ const PortalSelection = () => {
     {
       id: 'student',
       title: 'Student / Parent Portal',
-      description: 'Register as a student or parent to apply for hostels and track applications',
+      description: 'Register as a student or parent to apply for institutions and track applications',
       icon: GraduationCap,
       gradient: 'from-blue-500 to-cyan-500',
     },
     {
       id: 'hostel',
-      title: 'Hostel Portal',
-      description: 'Manage hostel operations, applications, and resources',
+      title: 'Institution Admin Portal',
+      description: 'Manage institution operations, applications, and resources',
       icon: Building2,
       gradient: 'from-purple-500 to-pink-500',
     },
     {
       id: 'trustee',
       title: 'Trustee Portal',
-      description: 'Oversee institutional management and compliance',
+      description: 'Oversee institutional management, compliance, and governance',
       icon: Users,
       gradient: 'from-orange-500 to-red-500',
     },
     {
       id: 'donor',
       title: 'Donor Portal',
-      description: 'Support students and institutions through contributions',
+      description: 'Support students and institutions through meaningful contributions',
       icon: Heart,
       gradient: 'from-green-500 to-emerald-500',
     },
@@ -54,27 +54,27 @@ const PortalSelection = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {portals.map((portal) => {
               const Icon = portal.icon;
               return (
                 <Card 
                   key={portal.id}
-                  className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/50"
+                  className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-primary/50 hover:-translate-y-1"
                 >
-                  <CardHeader>
-                    <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${portal.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-8 h-8 text-white" />
+                  <CardHeader className="space-y-4">
+                    <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${portal.gradient} flex items-center justify-center mb-2 group-hover:scale-110 transition-transform shadow-lg`}>
+                      <Icon className="w-10 h-10 text-white" />
                     </div>
-                    <CardTitle className="text-2xl">{portal.title}</CardTitle>
-                    <CardDescription className="text-base">
+                    <CardTitle className="text-2xl group-hover:text-primary transition-colors">{portal.title}</CardTitle>
+                    <CardDescription className="text-base leading-relaxed">
                       {portal.description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="flex gap-3">
                     <Button
                       onClick={() => navigate(`/auth?portal=${portal.id}&mode=signup`)}
-                      className="flex-1"
+                      className="flex-1 shadow-md hover:shadow-lg transition-shadow"
                       size="lg"
                     >
                       Sign Up
@@ -82,7 +82,7 @@ const PortalSelection = () => {
                     <Button
                       onClick={() => navigate(`/auth?portal=${portal.id}&mode=signin`)}
                       variant="outline"
-                      className="flex-1"
+                      className="flex-1 hover:bg-muted transition-colors"
                       size="lg"
                     >
                       Sign In
