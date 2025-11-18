@@ -17,21 +17,20 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    /* Light blue primary theme */
-    --primary: 213 94% 68%;
+    /* Unified maroon brand color - primary for all portals */
+    --primary: 0 63% 35%;
     --primary-foreground: 0 0% 100%;
     
-    /* Warm saffron for heritage */
-    --saffron: 38 92% 50%;
+    /* Maroon variants for consistency */
+    --maroon: 0 63% 35%;
+    --maroon-foreground: 0 0% 100%;
+    
+    /* Supporting colors (used minimally) */
+    --saffron: 0 63% 35%;
     --saffron-foreground: 0 0% 100%;
     
-    /* Deep teal for trust */
-    --teal: 173 80% 36%;
+    --teal: 0 63% 35%;
     --teal-foreground: 0 0% 100%;
-    
-    /* Maroon for admin sections */
-    --maroon: 0 100% 27%;
-    --maroon-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96%;
     --secondary-foreground: 222 47% 11%;
@@ -39,10 +38,10 @@ All colors MUST be HSL.
     --muted: 210 30% 93%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 173 58% 39%;
+    --accent: 0 63% 35%;
     --accent-foreground: 0 0% 100%;
     
-    --success: 142 71% 45%;
+    --success: 0 63% 35%;
     --success-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -50,12 +49,12 @@ All colors MUST be HSL.
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 213 94% 68%;
+    --ring: 0 63% 35%;
 
     --radius: 0.75rem;
     
     /* Custom design tokens */
-    --hero-gradient: linear-gradient(135deg, hsl(213 94% 68%) 0%, hsl(173 80% 36%) 100%);
+    --hero-gradient: linear-gradient(135deg, hsl(0 63% 35%) 0%, hsl(0 63% 25%) 100%);
     --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --card-shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -87,17 +86,17 @@ All colors MUST be HSL.
     --popover: 222 47% 13%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 213 94% 68%;
+    --primary: 0 63% 35%;
     --primary-foreground: 0 0% 100%;
     
-    --saffron: 38 92% 50%;
+    --maroon: 0 63% 35%;
+    --maroon-foreground: 0 0% 100%;
+    
+    --saffron: 0 63% 35%;
     --saffron-foreground: 0 0% 100%;
     
-    --teal: 173 80% 36%;
+    --teal: 0 63% 35%;
     --teal-foreground: 0 0% 100%;
-    
-    --maroon: 0 100% 27%;
-    --maroon-foreground: 0 0% 100%;
 
     --secondary: 217 33% 18%;
     --secondary-foreground: 210 40% 98%;
@@ -105,10 +104,10 @@ All colors MUST be HSL.
     --muted: 217 33% 18%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 173 58% 39%;
+    --accent: 0 63% 35%;
     --accent-foreground: 0 0% 100%;
     
-    --success: 142 71% 45%;
+    --success: 0 63% 35%;
     --success-foreground: 0 0% 100%;
 
     --destructive: 0 63% 31%;
@@ -116,16 +115,16 @@ All colors MUST be HSL.
 
     --border: 217 33% 18%;
     --input: 217 33% 18%;
-    --ring: 213 94% 68%;
+    --ring: 0 63% 35%;
     
     --sidebar-background: 240 6% 10%;
     --sidebar-foreground: 240 5% 96%;
-    --sidebar-primary: 213 94% 68%;
+    --sidebar-primary: 0 63% 35%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 4% 16%;
     --sidebar-accent-foreground: 240 5% 96%;
     --sidebar-border: 240 4% 16%;
-    --sidebar-ring: 213 94% 68%;
+    --sidebar-ring: 0 63% 35%;
   }
 }
 
