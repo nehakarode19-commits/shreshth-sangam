@@ -4,14 +4,15 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Home, Users, Clock, DollarSign, Shield, TrendingUp } from 'lucide-react';
+import { Home, Building, Clock, Shield, UserCheck, DollarSign, FileText, MessageSquare } from 'lucide-react';
+import DashboardLayout from '@/components/DashboardLayout';
 
 interface HostelStats {
   totalCapacity: number;
   occupied: number;
   vacant: number;
   pendingApplications: number;
-  trusteesCount: number;
+  trustees: number;
   fundingNeeded: number;
 }
 
@@ -23,7 +24,7 @@ export default function HostelAdminDashboard() {
     occupied: 0,
     vacant: 0,
     pendingApplications: 0,
-    trusteesCount: 0,
+    trustees: 0,
     fundingNeeded: 0,
   });
 
@@ -37,34 +38,34 @@ export default function HostelAdminDashboard() {
     const fetchStats = async () => {
       if (!user) return;
 
-      const { data: hostels } = await supabase
+      const { data: hostelsData } = await supabase
         .from('hostels')
         .select('*')
         .eq('admin_id', user.id);
 
-      if (hostels && hostels.length > 0) {
-        const totalCapacity = hostels.reduce((sum, h) => sum + (h.total_capacity || 0), 0);
-        const occupied = hostels.reduce((sum, h) => sum + (h.occupied_count || 0), 0);
-        const fundingNeeded = hostels.reduce((sum, h) => sum + (h.funding_needed || 0), 0);
+      if (hostelsData && hostelsData.length > 0) {
+        const totalCapacity = hostelsData.reduce((sum, h) => sum + (h.total_capacity || 0), 0);
+        const occupied = hostelsData.reduce((sum, h) => sum + (h.occupied_count || 0), 0);
+        const fundingNeeded = hostelsData.reduce((sum, h) => sum + (h.funding_needed || 0), 0);
 
-        const { data: applications } = await supabase
+        const { data: applicationsData } = await supabase
           .from('applications')
-          .select('status')
-          .in('hostel_id', hostels.map(h => h.id))
+          .select('id')
+          .in('hostel_id', hostelsData.map(h => h.id))
           .eq('status', 'pending');
 
-        const { data: trustees } = await supabase
+        const { data: trusteesData } = await supabase
           .from('trustees')
           .select('id')
-          .in('hostel_id', hostels.map(h => h.id));
+          .in('hostel_id', hostelsData.map(h => h.id));
 
         setStats({
           totalCapacity,
           occupied,
           vacant: totalCapacity - occupied,
-          pendingApplications: applications?.length || 0,
-          trusteesCount: trustees?.length || 0,
-          fundingNeeded,
+          pendingApplications: applicationsData?.length || 0,
+          trustees: trusteesData?.length || 0,
+          fundingNeeded: fundingNeeded,
         });
       }
     };
@@ -72,57 +73,58 @@ export default function HostelAdminDashboard() {
     fetchStats();
   }, [user]);
 
+  const sidebarItems = [
+    { label: 'Dashboard', path: '/dashboard/hostel-admin', icon: <Home className="h-5 w-5" /> },
+    { label: 'Hostels', path: '/hostels', icon: <Building className="h-5 w-5" /> },
+    { label: 'Scholarships', path: '/scholarships', icon: <FileText className="h-5 w-5" /> },
+    { label: 'Funding Status', path: '/funding', icon: <DollarSign className="h-5 w-5" /> },
+    { label: 'Reports', path: '/reports', icon: <FileText className="h-5 w-5" /> },
+    { label: 'CMS', path: '/cms', icon: <MessageSquare className="h-5 w-5" /> },
+    { label: 'CRM', path: '/crm', icon: <UserCheck className="h-5 w-5" /> },
+    { label: 'Settings', path: '/settings', icon: <Shield className="h-5 w-5" /> },
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-foreground">Hostel Admin Portal</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">{user?.email}</span>
-            <Button onClick={signOut} variant="outline">Sign Out</Button>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h2>
-          <p className="text-muted-foreground">Manage your hostels and monitor performance</p>
+    <DashboardLayout
+      sidebarItems={sidebarItems}
+      currentPath="/dashboard/hostel-admin"
+      userName={user?.email || "Admin"}
+      userPhone=""
+    >
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-3xl font-bold text-foreground mb-2">Hostel Dashboard</h2>
+          <p className="text-muted-foreground">Manage your hostel operations</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Total Capacity</CardTitle>
-              <Home className="h-4 w-4 text-muted-foreground" />
+              <Home className="h-4 w-4 text-blue-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalCapacity}</div>
-              <p className="text-xs text-muted-foreground mt-1">Students</p>
+              <div className="text-2xl font-bold text-blue-600">{stats.totalCapacity}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Occupied</CardTitle>
-              <Users className="h-4 w-4 text-green-500" />
+              <Building className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">{stats.occupied}</div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {stats.totalCapacity > 0 ? Math.round((stats.occupied / stats.totalCapacity) * 100) : 0}% occupancy
-              </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Vacant</CardTitle>
-              <TrendingUp className="h-4 w-4 text-blue-500" />
+              <UserCheck className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{stats.vacant}</div>
-              <p className="text-xs text-muted-foreground mt-1">Available beds</p>
+              <div className="text-2xl font-bold text-orange-600">{stats.vacant}</div>
             </CardContent>
           </Card>
 
@@ -139,10 +141,10 @@ export default function HostelAdminDashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Trustees</CardTitle>
-              <Shield className="h-4 w-4 text-muted-foreground" />
+              <Shield className="h-4 w-4 text-purple-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.trusteesCount}</div>
+              <div className="text-2xl font-bold text-purple-600">{stats.trustees}</div>
             </CardContent>
           </Card>
 
@@ -160,33 +162,31 @@ export default function HostelAdminDashboard() {
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Quick Actions
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button onClick={() => navigate('/hostel/register')} className="w-full" size="lg">
-                Add New Hostel
-              </Button>
-              <Button variant="outline" className="w-full">
-                View Applications
-              </Button>
-              <Button variant="outline" className="w-full">
-                Manage Trustees
-              </Button>
+              <Button className="w-full" onClick={() => navigate('/hostel/register')}>Add New Hostel</Button>
+              <Button variant="outline" className="w-full">Manage Applications</Button>
+              <Button variant="outline" className="w-full">Update Hostel Details</Button>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                Recent Activity
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
-                No recent activity to display
-              </p>
+              <p className="text-sm text-muted-foreground">No recent activity to display</p>
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }

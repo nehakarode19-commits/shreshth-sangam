@@ -4,7 +4,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, CheckCircle, Clock, XCircle, BookOpen, Home } from 'lucide-react';
+import { Home, Building, Book, FileText, MessageSquare, Users, Award } from 'lucide-react';
+import DashboardLayout from '@/components/DashboardLayout';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface ApplicationStats {
   total: number;
@@ -37,7 +39,7 @@ export default function StudentDashboard() {
         .from('students')
         .select('id')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (studentData) {
         const { data: applications } = await supabase
@@ -59,39 +61,55 @@ export default function StudentDashboard() {
     fetchStats();
   }, [user]);
 
+  const sidebarItems = [
+    { label: 'Dashboard', path: '/dashboard/student', icon: <Home className="h-5 w-5" /> },
+    { label: 'Institution', path: '/institutions', icon: <Building className="h-5 w-5" /> },
+    { label: 'Avail Scholarship', path: '/scholarships', icon: <Award className="h-5 w-5" /> },
+    { label: 'Loan Helpdesk', path: '/loans', icon: <FileText className="h-5 w-5" /> },
+    { label: 'Nutrition Support', path: '/nutrition', icon: <Users className="h-5 w-5" /> },
+    { label: 'Learning Resources', path: '/resources', icon: <Book className="h-5 w-5" /> },
+    { label: 'Help', path: '/help', icon: <MessageSquare className="h-5 w-5" /> },
+  ];
+
+  const upcomingInterviews = [
+    { college: 'Greenwood Hostel', date: '15 Mar 2025', time: '10:00 AM', mode: 'Online' },
+    { college: 'Riverside Hostel', date: '18 Mar 2025', time: '2:00 PM', mode: 'In-Person' },
+  ];
+
+  const preferredHostels = [
+    { name: 'Greenwood Hostel', city: 'Mumbai', rating: 4.5 },
+    { name: 'Riverside Hostel', city: 'Delhi', rating: 4.7 },
+    { name: 'Hillside Hostel', city: 'Bangalore', rating: 4.3 },
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-foreground">Student Portal</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">{user?.email}</span>
-            <Button onClick={signOut} variant="outline">Sign Out</Button>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-2">Welcome to Your Dashboard</h2>
-          <p className="text-muted-foreground">Track your applications and explore opportunities</p>
+    <DashboardLayout
+      sidebarItems={sidebarItems}
+      currentPath="/dashboard/student"
+      userName={user?.email || "Student"}
+      userPhone=""
+    >
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-3xl font-bold text-foreground mb-2">Student Dashboard</h2>
+          <p className="text-muted-foreground">Track your applications and discover hostels</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Total Applications</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <FileText className="h-4 w-4 text-blue-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.total}</div>
+              <div className="text-2xl font-bold text-blue-600">{stats.total}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Approved</CardTitle>
-              <CheckCircle className="h-4 w-4 text-green-500" />
+              <Award className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">{stats.approved}</div>
@@ -101,7 +119,7 @@ export default function StudentDashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Pending</CardTitle>
-              <Clock className="h-4 w-4 text-yellow-500" />
+              <FileText className="h-4 w-4 text-yellow-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
@@ -111,7 +129,7 @@ export default function StudentDashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Rejected</CardTitle>
-              <XCircle className="h-4 w-4 text-red-500" />
+              <FileText className="h-4 w-4 text-red-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
@@ -119,45 +137,73 @@ export default function StudentDashboard() {
           </Card>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5" />
-                Quick Actions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Button onClick={() => navigate('/student/register')} className="w-full" size="lg">
-                Complete Registration
-              </Button>
-              <Button onClick={() => navigate('/institutions')} variant="outline" className="w-full">
-                Browse Institutions
-              </Button>
-              <Button onClick={() => navigate('/apply')} variant="outline" className="w-full">
-                Apply to Hostels
-              </Button>
-            </CardContent>
-          </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Upcoming Interviews</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>College Name</TableHead>
+                  <TableHead>Interview Date</TableHead>
+                  <TableHead>Time</TableHead>
+                  <TableHead>Mode</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {upcomingInterviews.map((interview, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell className="font-medium">{interview.college}</TableCell>
+                    <TableCell>{interview.date}</TableCell>
+                    <TableCell>{interview.time}</TableCell>
+                    <TableCell>{interview.mode}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Home className="h-5 w-5" />
-                Recommended Hostels
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Complete your registration to get personalized hostel recommendations
-              </p>
-              <Button onClick={() => navigate('/institutions')} variant="secondary" className="w-full">
-                Explore Hostels
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
-    </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Counselor / Coordinator</CardTitle>
+          </CardHeader>
+          <CardContent className="flex items-center gap-4">
+            <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center">
+              <Users className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <div>
+              <p className="font-medium">Rajesh Kumar</p>
+              <p className="text-sm text-muted-foreground">rajesh@jbg.org</p>
+              <p className="text-sm text-muted-foreground">+91 98765 43210</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Preferred Hostels</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-4">
+              {preferredHostels.map((hostel, idx) => (
+                <Card key={idx} className="cursor-pointer hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="h-32 bg-muted rounded-lg mb-2"></div>
+                    <CardTitle className="text-base">{hostel.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">{hostel.city}</p>
+                    <p className="text-sm font-medium mt-1">Rating: {hostel.rating}/5</p>
+                    <Button className="w-full mt-4" size="sm">View Details</Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </DashboardLayout>
   );
 }

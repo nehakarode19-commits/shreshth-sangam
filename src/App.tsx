@@ -23,6 +23,8 @@ import InstitutionAdminDashboard from "./pages/InstitutionAdminDashboard";
 import DonorDashboard from "./pages/DonorDashboard";
 import TrusteeDashboard from "./pages/TrusteeDashboard";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import HostelRegistration from "./pages/HostelRegistration";
+import StudentRegistration from "./pages/StudentRegistration";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +54,8 @@ const App = () => (
             <Route path="/dashboard/donor" element={<DonorDashboard />} />
             <Route path="/dashboard/trustee" element={<TrusteeDashboard />} />
             <Route path="/dashboard/super-admin" element={<SuperAdminDashboard />} />
+            <Route path="/hostel/register" element={<HostelRegistration />} />
+            <Route path="/student/register" element={<StudentRegistration />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
