@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogIn, UserCircle, Building2, Heart, Users, Globe } from "lucide-react";
-import jainyoLogo from "@/assets/jainyo-logo.png";
+import jainyoLogo from "@/assets/jainyo-hostels-logo.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
