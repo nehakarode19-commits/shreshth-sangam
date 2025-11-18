@@ -12,6 +12,123 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { NavLink } from "@/components/NavLink";
 
+// Auth form component extracted outside to avoid hoisting issues
+const AuthFormComponent = ({ 
+  isSignUp, 
+  loading, 
+  portalType, 
+  portalTitle,
+  onSubmit,
+  onToggleMode
+}: {
+  isSignUp: boolean;
+  loading: boolean;
+  portalType: string;
+  portalTitle: string;
+  onSubmit: (email: string, password: string, fullName: string, phone: string) => void;
+  onToggleMode: () => void;
+}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validation
+    if (!email || !password) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+    
+    if (isSignUp && !fullName) {
+      toast.error('Please enter your full name');
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      return;
+    }
+
+    onSubmit(email, password, fullName, phone);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {isSignUp && (
+        <>
+          <div>
+            <Label htmlFor="name">Full Name *</Label>
+            <Input
+              id="name"
+              type="text"
+              placeholder="Enter your full name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input
+              id="phone"
+              type="tel"
+              placeholder="+91 XXXXX XXXXX"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
+        </>
+      )}
+      <div>
+        <Label htmlFor="email">Email *</Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="your@email.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor="password">Password *</Label>
+        <Input
+          id="password"
+          type="password"
+          placeholder="At least 6 characters"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? 'Please wait...' : isSignUp ? `Create ${portalTitle} Account` : `Sign In to ${portalTitle}`}
+      </Button>
+
+      <p className="text-center text-sm text-muted-foreground">
+        {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
+        <button
+          type="button"
+          onClick={onToggleMode}
+          className="text-primary hover:underline font-medium"
+        >
+          {isSignUp ? 'Sign In' : 'Sign Up'}
+        </button>
+      </p>
+
+      {(portalType === 'student' || portalType === 'hostel') && isSignUp && (
+        <p className="text-center text-sm text-muted-foreground">
+          Note: New {portalType === 'student' ? 'students' : 'hostels'} should complete the full registration form.
+        </p>
+      )}
+    </form>
+  );
+};
+
 const Auth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -158,109 +275,9 @@ const Auth = () => {
     }
   };
 
-  const AuthForm = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [fullName, setFullName] = useState('');
-    const [phone, setPhone] = useState('');
-
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      
-      // Validation
-      if (!email || !password) {
-        toast.error('Please fill in all required fields');
-        return;
-      }
-      
-      if (isSignUp && !fullName) {
-        toast.error('Please enter your full name');
-        return;
-      }
-
-      if (password.length < 6) {
-        toast.error('Password must be at least 6 characters');
-        return;
-      }
-
-      handleAuth(email, password, fullName, phone);
-    };
-
-    return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {isSignUp && (
-          <>
-            <div>
-              <Label htmlFor="name">Full Name *</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Enter your full name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="+91 XXXXX XXXXX"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-          </>
-        )}
-        <div>
-          <Label htmlFor="email">Email *</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="your@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="password">Password *</Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder="At least 6 characters"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? 'Please wait...' : isSignUp ? `Create ${portalInfo.title} Account` : `Sign In to ${portalInfo.title}`}
-        </Button>
-
-        <p className="text-center text-sm text-muted-foreground">
-          {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-          <button
-            type="button"
-            onClick={() => {
-              setIsSignUp(!isSignUp);
-              navigate(`/auth?portal=${portalType}&mode=${!isSignUp ? 'signup' : 'signin'}`);
-            }}
-            className="text-primary hover:underline font-medium"
-          >
-            {isSignUp ? 'Sign In' : 'Sign Up'}
-          </button>
-        </p>
-
-        {(portalType === 'student' || portalType === 'hostel') && isSignUp && (
-          <p className="text-center text-sm text-muted-foreground">
-            Note: New {portalType === 'student' ? 'students' : 'hostels'} should complete the full registration form.
-          </p>
-        )}
-      </form>
-    );
+  const handleToggleMode = () => {
+    setIsSignUp(!isSignUp);
+    navigate(`/auth?portal=${portalType}&mode=${!isSignUp ? 'signup' : 'signin'}`);
   };
 
   if (authLoading) {
@@ -306,7 +323,14 @@ const Auth = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <AuthForm />
+              <AuthFormComponent
+                isSignUp={isSignUp}
+                loading={loading}
+                portalType={portalType}
+                portalTitle={portalInfo.title}
+                onSubmit={handleAuth}
+                onToggleMode={handleToggleMode}
+              />
             </CardContent>
           </Card>
 
