@@ -12,7 +12,7 @@ import { NavLink } from "@/components/NavLink";
 
 const Index = () => {
   const impactStats = [
-    { label: "Hostels Onboarded", value: "150+", icon: Building2 },
+    { label: "Institutions Onboarded", value: "150+", icon: Building2 },
     { label: "Students Helped", value: "12,000+", icon: Users },
     { label: "Donors Supporting", value: "3,500+", icon: Heart },
     { label: "Years of Service", value: "25+", icon: Award },
@@ -21,12 +21,12 @@ const Index = () => {
   const featuredInstitutions = [
     {
       id: "1",
-      name: "Shree Mahavir Jain Hostel",
+      name: "Shree Mahavir Jain Boarding",
       location: "Ahmedabad, Gujarat",
       capacity: 250,
       image: jainHeritage,
       verified: true,
-      type: "Boys Hostel",
+      type: "Boys Institution",
     },
     {
       id: "2",
@@ -35,16 +35,16 @@ const Index = () => {
       capacity: 180,
       image: hostelRoom,
       verified: true,
-      type: "Girls Hostel",
+      type: "Girls Institution",
     },
     {
       id: "3",
-      name: "Jain Vidyalaya Hostel",
+      name: "Jain Vidyalaya Boarding",
       location: "Bangalore, Karnataka",
       capacity: 320,
       image: culturalEvent,
       verified: true,
-      type: "Co-Ed",
+      type: "Co-Ed Institution",
     },
   ];
 
@@ -68,14 +68,14 @@ const Index = () => {
                 Strengthening Jain Boarding — Together
               </h1>
               <p className="text-xl text-muted-foreground mb-8 text-balance">
-                A trusted platform connecting hostels, trustees, donors and students to preserve values, 
+                A trusted platform connecting institutions, trustees, donors and students to preserve values, 
                 boost education and enable rural development.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <NavLink to="/institutions">
                   <Button size="lg" className="bg-primary hover:bg-primary/90">
                     <Search className="mr-2 h-5 w-5" />
-                    Discover Hostels
+                    Discover Institutions
                   </Button>
                 </NavLink>
                 <NavLink to="/donors">
@@ -218,7 +218,7 @@ const Index = () => {
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Institutions</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Discover our verified network of quality boarding schools and hostels committed to excellence
+                Discover our verified network of quality boarding schools committed to excellence
               </p>
             </div>
 
