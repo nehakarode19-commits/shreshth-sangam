@@ -1,45 +1,34 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users } from "lucide-react";
-import trustee1 from "@/assets/committee/trustee-1.jpg";
-import trustee2 from "@/assets/committee/trustee-2.jpg";
-import trustee3 from "@/assets/committee/trustee-3.jpg";
-import trustee4 from "@/assets/committee/trustee-4.jpg";
-import trustee5 from "@/assets/committee/trustee-5.jpg";
-import trustee6 from "@/assets/committee/trustee-6.jpg";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Users, User } from "lucide-react";
 
 const Committee = () => {
   const boardMembers = [
     {
       title: "Trustee 1",
-      position: "President",
-      image: trustee1
+      position: "President"
     },
     {
       title: "Trustee 2",
-      position: "Vice President",
-      image: trustee2
+      position: "Vice President"
     },
     {
       title: "Trustee 3",
-      position: "General Secretary",
-      image: trustee3
+      position: "General Secretary"
     },
     {
       title: "Trustee 4",
-      position: "Treasurer",
-      image: trustee4
+      position: "Treasurer"
     },
     {
       title: "Trustee 5",
-      position: "Executive Member",
-      image: trustee5
+      position: "Executive Member"
     },
     {
       title: "Trustee 6",
-      position: "Executive Member",
-      image: trustee6
+      position: "Executive Member"
     }
   ];
 
@@ -77,14 +66,13 @@ const Committee = () => {
                   className="group hover:shadow-elegant transition-all duration-300 cursor-pointer hover:-translate-y-1 overflow-hidden"
                 >
                   <CardContent className="p-0">
-                    {/* Image Section */}
-                    <div className="relative h-64 overflow-hidden">
-                      <img 
-                        src={member.image} 
-                        alt={`${member.title} - ${member.position}`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-maroon/60 to-transparent" />
+                    {/* Avatar Section */}
+                    <div className="relative h-64 flex items-center justify-center bg-gradient-to-br from-maroon to-maroon/80">
+                      <Avatar className="h-32 w-32 border-4 border-white shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                        <AvatarFallback className="bg-white">
+                          <User className="h-16 w-16 text-maroon" />
+                        </AvatarFallback>
+                      </Avatar>
                     </div>
                     
                     {/* Info Section */}
