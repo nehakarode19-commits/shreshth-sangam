@@ -28,6 +28,10 @@ All colors MUST be HSL.
     /* Deep teal for trust */
     --teal: 173 80% 36%;
     --teal-foreground: 0 0% 100%;
+    
+    /* Maroon for admin sections */
+    --maroon: 0 100% 27%;
+    --maroon-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96%;
     --secondary-foreground: 222 47% 11%;
@@ -91,6 +95,9 @@ All colors MUST be HSL.
     
     --teal: 173 80% 36%;
     --teal-foreground: 0 0% 100%;
+    
+    --maroon: 0 100% 27%;
+    --maroon-foreground: 0 0% 100%;
 
     --secondary: 217 33% 18%;
     --secondary-foreground: 210 40% 98%;
