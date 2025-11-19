@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const step1Schema = z.object({
   firstName: z.string().min(2, "First name is required"),
@@ -27,6 +28,7 @@ export default function StudentRegistrationForm() {
   const [formData, setFormData] = useState<any>({});
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const form = useForm({
     resolver: zodResolver(step1Schema),
@@ -41,6 +43,15 @@ export default function StudentRegistrationForm() {
 
   const handleFinalSubmit = async (data: any) => {
     const finalData = { ...formData, ...data };
+    
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to complete registration.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     try {
       const { error } = await supabase.from('students').insert({
@@ -71,7 +82,8 @@ export default function StudentRegistrationForm() {
         religion_community: finalData.community,
         dietary_preference: finalData.dietary,
         willing_to_relocate: finalData.relocate === 'yes',
-        status: 'active'
+        status: 'active',
+        user_id: user.id
       });
 
       if (error) throw error;
