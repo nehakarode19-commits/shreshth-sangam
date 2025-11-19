@@ -17,8 +17,11 @@ interface AdminStats {
   approvedToday: number;
 }
 
+import SuperAdminLayout from "@/components/SuperAdminLayout";
+import Dashboard from "./super-admin/Dashboard";
+
 export default function SuperAdminDashboard() {
-  const { user, userRole, loading, signOut } = useAuth();
+  const { userRole, loading } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState<AdminStats>({
     totalHostels: 0,
@@ -77,16 +80,11 @@ export default function SuperAdminDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-foreground">Super Admin Portal</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">{user?.email}</span>
-            <Button onClick={signOut} variant="outline">Sign Out</Button>
-          </div>
-        </div>
-      </header>
+    <SuperAdminLayout>
+      <Dashboard />
+    </SuperAdminLayout>
+  );
+}
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
