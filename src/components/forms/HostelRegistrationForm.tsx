@@ -12,7 +12,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 
 const step1Schema = z.object({
   hostelName: z.string().min(2, "Hostel name is required"),
@@ -22,6 +21,11 @@ const step1Schema = z.object({
   email: z.string().email("Invalid email"),
   phone: z.string().min(10, "Valid phone number required"),
   website: z.string().url().optional().or(z.literal('')),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Please confirm password"),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 const facilities = ['Library', 'WiFi', 'RO Water', 'Mess', 'CCTV', 'Study Hall', 'Sports', 'Medical Help'];
@@ -32,7 +36,6 @@ export default function HostelRegistrationForm() {
   const [formData, setFormData] = useState<any>({});
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   const form = useForm({
     resolver: zodResolver(step1Schema),
@@ -48,17 +51,25 @@ export default function HostelRegistrationForm() {
   const handleFinalSubmit = async (data: any) => {
     const finalData = { ...formData, ...data };
     
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please log in to complete registration.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
     try {
-      // Create hostel with admin_id
+      // Step 1: Create auth account
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: finalData.email,
+        password: finalData.password,
+        options: {
+          data: {
+            full_name: finalData.contactPerson,
+            phone: finalData.phone,
+            user_type: 'hostel_admin'
+          },
+          emailRedirectTo: `${window.location.origin}/dashboard/hostel-admin`
+        }
+      });
+
+      if (authError) throw authError;
+      if (!authData.user) throw new Error("Failed to create account");
+
+      // Step 2: Create hostel with admin_id
       const { data: hostelData, error: hostelError } = await supabase
         .from('hostels')
         .insert({
@@ -80,14 +91,14 @@ export default function HostelRegistrationForm() {
           govt_support: finalData.govtAid === 'yes',
           type: 'hostel',
           status: 'pending',
-          admin_id: user.id
+          admin_id: authData.user.id
         })
         .select()
         .single();
 
       if (hostelError) throw hostelError;
 
-      // Create trustee
+      // Step 3: Create trustee
       if (hostelData) {
         await supabase.from('trustees').insert({
           name: finalData.trusteeName,
@@ -95,7 +106,7 @@ export default function HostelRegistrationForm() {
           email: finalData.trusteeEmail,
           designation: finalData.trusteeDesignation,
           hostel_id: hostelData.id,
-          user_id: user.id
+          user_id: authData.user.id
         });
       }
 
@@ -168,6 +179,22 @@ export default function HostelRegistrationForm() {
               <div>
                 <Label>Website (optional)</Label>
                 <Input {...form.register('website')} placeholder="https://" />
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Password *</Label>
+                  <Input type="password" {...form.register('password')} placeholder="At least 6 characters" />
+                  {form.formState.errors.password && (
+                    <p className="text-sm text-red-600 mt-1">{form.formState.errors.password.message as string}</p>
+                  )}
+                </div>
+                <div>
+                  <Label>Confirm Password *</Label>
+                  <Input type="password" {...form.register('confirmPassword')} placeholder="Re-enter password" />
+                  {form.formState.errors.confirmPassword && (
+                    <p className="text-sm text-red-600 mt-1">{form.formState.errors.confirmPassword.message as string}</p>
+                  )}
+                </div>
               </div>
               <Button type="submit" className="w-full">Next</Button>
             </form>
