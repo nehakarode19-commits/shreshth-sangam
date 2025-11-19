@@ -82,7 +82,7 @@ const PortalSelection = () => {
                   <CardContent className="flex gap-3">
                     {portal.isDirect ? (
                       <Button
-                        onClick={() => window.open('/super-admin/dashboard', '_blank', 'noopener,noreferrer')}
+                        onClick={() => navigate('/super-admin/dashboard')}
                         className="w-full shadow-md hover:shadow-lg transition-shadow"
                         size="lg"
                       >
@@ -91,14 +91,14 @@ const PortalSelection = () => {
                     ) : (
                       <>
                         <Button
-                          onClick={() => window.open(`/auth?portal=${portal.id}&mode=signup`, '_blank', 'noopener,noreferrer')}
+                          onClick={() => navigate(`/auth?portal=${portal.id}&mode=signup`)}
                           className="flex-1 shadow-md hover:shadow-lg transition-shadow"
                           size="lg"
                         >
                           Sign Up
                         </Button>
                         <Button
-                          onClick={() => window.open(`/auth?portal=${portal.id}&mode=signin`, '_blank', 'noopener,noreferrer')}
+                          onClick={() => navigate(`/auth?portal=${portal.id}&mode=signin`)}
                           variant="outline"
                           className="flex-1 hover:bg-muted transition-colors"
                           size="lg"
