@@ -52,27 +52,45 @@ export default function HostelRegistrationForm() {
     const finalData = { ...formData, ...data };
     
     try {
-      // Step 1: Create auth account
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      // Step 1: Create or reuse auth account
+      let userId: string | null = null;
+
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: finalData.email,
         password: finalData.password,
         options: {
           data: {
             full_name: finalData.contactPerson,
             phone: finalData.phone,
-            user_type: 'hostel_admin'
+            user_type: 'hostel_admin',
           },
-          emailRedirectTo: `${window.location.origin}/dashboard/hostel-admin`
-        }
+          emailRedirectTo: `${window.location.origin}/dashboard/hostel-admin`,
+        },
       });
 
-      if (authError) {
-        if (authError.message.includes('already registered')) {
-          throw new Error("This email is already registered. Please login instead of creating a new account.");
+      if (signUpError) {
+        if (signUpError.message.includes('already registered')) {
+          // Try to sign in with the same credentials instead of failing
+          const { data: signInData, error: signInError } =
+            await supabase.auth.signInWithPassword({
+              email: finalData.email,
+              password: finalData.password,
+            });
+
+          if (signInError || !signInData.user) {
+            throw new Error(
+              'This email is already registered. Please login instead of creating a new account.'
+            );
+          }
+
+          userId = signInData.user.id;
+        } else {
+          throw signUpError;
         }
-        throw authError;
+      } else {
+        if (!signUpData.user) throw new Error('Failed to create account');
+        userId = signUpData.user.id;
       }
-      if (!authData.user) throw new Error("Failed to create account");
 
       // Step 2: Create hostel with admin_id
       const { data: hostelData, error: hostelError } = await supabase
@@ -96,7 +114,7 @@ export default function HostelRegistrationForm() {
           govt_support: finalData.govtAid === 'yes',
           type: 'hostel',
           status: 'pending',
-          admin_id: authData.user.id
+          admin_id: userId,
         })
         .select()
         .single();
@@ -105,8 +123,8 @@ export default function HostelRegistrationForm() {
 
       // Step 3: Create user role
       await supabase.from('user_roles').insert({
-        user_id: authData.user.id,
-        role: 'hostel_admin'
+        user_id: userId,
+        role: 'hostel_admin',
       });
 
       // Step 4: Create trustee
@@ -117,7 +135,7 @@ export default function HostelRegistrationForm() {
           email: finalData.trusteeEmail,
           designation: finalData.trusteeDesignation,
           hostel_id: hostelData.id,
-          user_id: authData.user.id
+          user_id: userId,
         });
       }
 
