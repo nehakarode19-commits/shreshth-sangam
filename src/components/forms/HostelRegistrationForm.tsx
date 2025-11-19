@@ -126,8 +126,8 @@ export default function HostelRegistrationForm() {
         description: "Your hostel has been registered successfully.",
       });
 
-      // Navigate to hostel admin dashboard
-      navigate('/dashboard/hostel-admin');
+      // Navigate to success page with hostel details
+      navigate(`/hostel/registration-success?hostelId=${hostelData.id}`);
     } catch (error: any) {
       toast({
         title: "Registration Failed",
