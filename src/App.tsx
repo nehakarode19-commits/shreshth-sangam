@@ -37,6 +37,13 @@ import TrusteeLoans from "./pages/trustee/Loans";
 import TrusteeNutrition from "./pages/trustee/Nutrition";
 import TrusteeResources from "./pages/trustee/Resources";
 import TrusteeHelp from "./pages/trustee/Help";
+import HostelHostels from "./pages/hostel/Hostels";
+import HostelScholarships from "./pages/hostel/Scholarships";
+import HostelFunding from "./pages/hostel/Funding";
+import HostelReports from "./pages/hostel/Reports";
+import HostelCMS from "./pages/hostel/CMS";
+import HostelCRM from "./pages/hostel/CRM";
+import HostelSettings from "./pages/hostel/Settings";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +92,15 @@ const App = () => (
             <Route path="/trustee/nutrition" element={<TrusteeNutrition />} />
             <Route path="/trustee/resources" element={<TrusteeResources />} />
             <Route path="/trustee/help" element={<TrusteeHelp />} />
+            
+            {/* Hostel Admin Portal Routes */}
+            <Route path="/hostels" element={<HostelHostels />} />
+            <Route path="/scholarships" element={<HostelScholarships />} />
+            <Route path="/funding" element={<HostelFunding />} />
+            <Route path="/reports" element={<HostelReports />} />
+            <Route path="/cms" element={<HostelCMS />} />
+            <Route path="/crm" element={<HostelCRM />} />
+            <Route path="/settings" element={<HostelSettings />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
