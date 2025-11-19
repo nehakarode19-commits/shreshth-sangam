@@ -371,9 +371,11 @@ const Auth = () => {
         }
 
         if (data.user) {
+          let trusteeId = null;
+          
           // Create additional records for trustee or donor
           if (portalType === 'trustee' && institutionName && designation) {
-            const { error: trusteeError } = await supabase
+            const { data: trusteeData, error: trusteeError } = await supabase
               .from('trustees')
               .insert({
                 user_id: data.user.id,
@@ -381,13 +383,17 @@ const Auth = () => {
                 email: email,
                 phone: phone,
                 designation: `${designation} - ${institutionName}`,
-              });
+              })
+              .select()
+              .single();
 
             if (trusteeError) {
               if (import.meta.env.DEV) {
                 console.error('Error creating trustee record:', trusteeError);
               }
               toast.error('Account created but profile setup incomplete. Please contact support.');
+            } else if (trusteeData) {
+              trusteeId = trusteeData.id;
             }
           } else if (portalType === 'donor') {
             const { error: donorError } = await supabase
@@ -415,7 +421,7 @@ const Auth = () => {
           setTimeout(() => {
             switch (portalInfo.role) {
               case 'trustee':
-                navigate('/dashboard/trustee');
+                navigate(`/trustee/registration-success${trusteeId ? `?trusteeId=${trusteeId}` : ''}`);
                 break;
               case 'donor':
                 navigate('/dashboard/donor');
