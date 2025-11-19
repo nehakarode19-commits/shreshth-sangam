@@ -66,7 +66,12 @@ export default function HostelRegistrationForm() {
         }
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        if (authError.message.includes('already registered')) {
+          throw new Error("This email is already registered. Please login instead of creating a new account.");
+        }
+        throw authError;
+      }
       if (!authData.user) throw new Error("Failed to create account");
 
       // Step 2: Create hostel with admin_id
@@ -98,7 +103,13 @@ export default function HostelRegistrationForm() {
 
       if (hostelError) throw hostelError;
 
-      // Step 3: Create trustee
+      // Step 3: Create user role
+      await supabase.from('user_roles').insert({
+        user_id: authData.user.id,
+        role: 'hostel_admin'
+      });
+
+      // Step 4: Create trustee
       if (hostelData) {
         await supabase.from('trustees').insert({
           name: finalData.trusteeName,

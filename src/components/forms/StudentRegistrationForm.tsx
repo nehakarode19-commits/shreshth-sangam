@@ -62,7 +62,12 @@ export default function StudentRegistrationForm() {
         }
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        if (authError.message.includes('already registered')) {
+          throw new Error("This email is already registered. Please login instead of creating a new account.");
+        }
+        throw authError;
+      }
       if (!authData.user) throw new Error("Failed to create account");
 
       // Step 2: Create student profile with the new user_id
@@ -99,6 +104,12 @@ export default function StudentRegistrationForm() {
       });
 
       if (studentError) throw studentError;
+
+      // Step 3: Create user role
+      await supabase.from('user_roles').insert({
+        user_id: authData.user.id,
+        role: 'student'
+      });
 
       toast({
         title: "Registration Successful!",
