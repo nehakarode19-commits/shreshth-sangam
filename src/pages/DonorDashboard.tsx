@@ -15,7 +15,7 @@ interface DonorStats {
 }
 
 export default function DonorDashboard() {
-  const { user, userRole, signOut } = useAuth();
+  const { user, userRole, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState<DonorStats>({
     totalDonations: 0,
@@ -24,10 +24,11 @@ export default function DonorDashboard() {
   });
 
   useEffect(() => {
-    if (userRole && userRole !== 'donor') {
+    // Only redirect if loading is complete and role doesn't match
+    if (!loading && userRole && userRole !== 'donor') {
       navigate('/portal-selection');
     }
-  }, [userRole, navigate]);
+  }, [userRole, loading, navigate]);
 
   useEffect(() => {
     const fetchStats = async () => {

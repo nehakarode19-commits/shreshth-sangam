@@ -16,7 +16,7 @@ interface InstitutionStats {
 }
 
 export default function InstitutionAdminDashboard() {
-  const { user, userRole, signOut } = useAuth();
+  const { user, userRole, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState<InstitutionStats>({
     totalStudents: 0,
@@ -28,10 +28,11 @@ export default function InstitutionAdminDashboard() {
   });
 
   useEffect(() => {
-    if (userRole && userRole !== 'institution_admin') {
+    // Only redirect if loading is complete and role doesn't match
+    if (!loading && userRole && userRole !== 'institution_admin') {
       navigate('/portal-selection');
     }
-  }, [userRole, navigate]);
+  }, [userRole, loading, navigate]);
 
   useEffect(() => {
     const fetchStats = async () => {
