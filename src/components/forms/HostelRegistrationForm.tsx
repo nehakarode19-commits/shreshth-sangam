@@ -37,16 +37,21 @@ export default function HostelRegistrationForm() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Only use zodResolver for step 1
   const form = useForm({
-    resolver: zodResolver(step1Schema),
+    resolver: step === 1 ? zodResolver(step1Schema) : undefined,
   });
 
   const handleNext = (data: any) => {
     setFormData({ ...formData, ...data });
+    form.reset(); // Reset form state for next step
     setStep(step + 1);
   };
 
-  const handleBack = () => setStep(step - 1);
+  const handleBack = () => {
+    setStep(step - 1);
+    form.reset();
+  };
 
   const handleFinalSubmit = async (data: any) => {
     const finalData = { ...formData, ...data };
