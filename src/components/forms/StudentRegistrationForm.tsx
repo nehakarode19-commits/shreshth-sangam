@@ -10,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 
 const step1Schema = z.object({
   firstName: z.string().min(2, "First name is required"),
@@ -21,6 +20,11 @@ const step1Schema = z.object({
   mobile: z.string().min(10, "Valid mobile number required"),
   altMobile: z.string().optional(),
   email: z.string().email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Please confirm password"),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 export default function StudentRegistrationForm() {
@@ -28,7 +32,6 @@ export default function StudentRegistrationForm() {
   const [formData, setFormData] = useState<any>({});
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   const form = useForm({
     resolver: zodResolver(step1Schema),
@@ -44,17 +47,26 @@ export default function StudentRegistrationForm() {
   const handleFinalSubmit = async (data: any) => {
     const finalData = { ...formData, ...data };
     
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please log in to complete registration.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
     try {
-      const { error } = await supabase.from('students').insert({
+      // Step 1: Create auth account
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: finalData.email,
+        password: finalData.password,
+        options: {
+          data: {
+            full_name: `${finalData.firstName} ${finalData.lastName}`,
+            phone: finalData.mobile,
+            user_type: 'student'
+          },
+          emailRedirectTo: `${window.location.origin}/dashboard/student`
+        }
+      });
+
+      if (authError) throw authError;
+      if (!authData.user) throw new Error("Failed to create account");
+
+      // Step 2: Create student profile with the new user_id
+      const { error: studentError } = await supabase.from('students').insert({
         first_name: finalData.firstName,
         middle_name: finalData.middleName || null,
         last_name: finalData.lastName,
@@ -83,14 +95,14 @@ export default function StudentRegistrationForm() {
         dietary_preference: finalData.dietary,
         willing_to_relocate: finalData.relocate === 'yes',
         status: 'active',
-        user_id: user.id
+        user_id: authData.user.id
       });
 
-      if (error) throw error;
+      if (studentError) throw studentError;
 
       toast({
         title: "Registration Successful!",
-        description: "Your student profile has been created.",
+        description: "Your account has been created successfully.",
       });
 
       navigate('/dashboard/student');
@@ -168,6 +180,22 @@ export default function StudentRegistrationForm() {
               <div>
                 <Label>Email Address *</Label>
                 <Input type="email" {...form.register('email')} />
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Password *</Label>
+                  <Input type="password" {...form.register('password')} placeholder="At least 6 characters" />
+                  {form.formState.errors.password && (
+                    <p className="text-sm text-red-600 mt-1">{form.formState.errors.password.message as string}</p>
+                  )}
+                </div>
+                <div>
+                  <Label>Confirm Password *</Label>
+                  <Input type="password" {...form.register('confirmPassword')} placeholder="Re-enter password" />
+                  {form.formState.errors.confirmPassword && (
+                    <p className="text-sm text-red-600 mt-1">{form.formState.errors.confirmPassword.message as string}</p>
+                  )}
+                </div>
               </div>
               <Button type="submit" className="w-full">Next</Button>
             </form>
