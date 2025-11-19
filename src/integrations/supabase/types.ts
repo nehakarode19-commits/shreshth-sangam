@@ -874,6 +874,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      hostel_admin_can_view_student: {
+        Args: { _student_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role:
