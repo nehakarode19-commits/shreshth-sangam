@@ -28,6 +28,7 @@ import HostelRegistration from "./pages/HostelRegistration";
 import StudentRegistration from "./pages/StudentRegistration";
 import HostelRegistrationSuccess from "./pages/HostelRegistrationSuccess";
 import StudentRegistrationSuccess from "./pages/StudentRegistrationSuccess";
+import TrusteeRegistrationSuccess from "./pages/TrusteeRegistrationSuccess";
 import ImpactReports from "./pages/donor/ImpactReports";
 import TaxReceipts from "./pages/donor/TaxReceipts";
 import VolunteerSign from "./pages/donor/VolunteerSign";
@@ -79,6 +80,7 @@ const App = () => (
             <Route path="/student/register" element={<StudentRegistration />} />
             <Route path="/hostel/registration-success" element={<HostelRegistrationSuccess />} />
             <Route path="/student/registration-success" element={<StudentRegistrationSuccess />} />
+            <Route path="/trustee/registration-success" element={<TrusteeRegistrationSuccess />} />
             
             {/* Donor Portal Routes */}
             <Route path="/donor/impact-reports" element={<ImpactReports />} />
