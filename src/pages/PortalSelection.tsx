@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Building2, Users, Heart } from "lucide-react";
+import { GraduationCap, Building2, Users, Heart, Shield } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -37,6 +37,14 @@ const PortalSelection = () => {
       icon: Heart,
       bgColor: 'bg-success',
     },
+    {
+      id: 'super-admin',
+      title: 'Super Admin Portal',
+      description: 'Full system administration, manage all portals, users, and content',
+      icon: Shield,
+      bgColor: 'bg-destructive',
+      isDirect: true,
+    },
   ];
 
   return (
@@ -54,7 +62,7 @@ const PortalSelection = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {portals.map((portal) => {
               const Icon = portal.icon;
               return (
@@ -72,21 +80,33 @@ const PortalSelection = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="flex gap-3">
-                    <Button
-                      onClick={() => window.open(`/auth?portal=${portal.id}&mode=signup`, '_blank', 'noopener,noreferrer')}
-                      className="flex-1 shadow-md hover:shadow-lg transition-shadow"
-                      size="lg"
-                    >
-                      Sign Up
-                    </Button>
-                    <Button
-                      onClick={() => window.open(`/auth?portal=${portal.id}&mode=signin`, '_blank', 'noopener,noreferrer')}
-                      variant="outline"
-                      className="flex-1 hover:bg-muted transition-colors"
-                      size="lg"
-                    >
-                      Sign In
-                    </Button>
+                    {portal.isDirect ? (
+                      <Button
+                        onClick={() => window.open('/super-admin/dashboard', '_blank', 'noopener,noreferrer')}
+                        className="w-full shadow-md hover:shadow-lg transition-shadow"
+                        size="lg"
+                      >
+                        Access Portal
+                      </Button>
+                    ) : (
+                      <>
+                        <Button
+                          onClick={() => window.open(`/auth?portal=${portal.id}&mode=signup`, '_blank', 'noopener,noreferrer')}
+                          className="flex-1 shadow-md hover:shadow-lg transition-shadow"
+                          size="lg"
+                        >
+                          Sign Up
+                        </Button>
+                        <Button
+                          onClick={() => window.open(`/auth?portal=${portal.id}&mode=signin`, '_blank', 'noopener,noreferrer')}
+                          variant="outline"
+                          className="flex-1 hover:bg-muted transition-colors"
+                          size="lg"
+                        >
+                          Sign In
+                        </Button>
+                      </>
+                    )}
                   </CardContent>
                 </Card>
               );
