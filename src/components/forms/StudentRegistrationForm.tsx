@@ -71,7 +71,7 @@ export default function StudentRegistrationForm() {
       if (!authData.user) throw new Error("Failed to create account");
 
       // Step 2: Create student profile with the new user_id
-      const { error: studentError } = await supabase.from('students').insert({
+      const { data: studentData, error: studentError } = await supabase.from('students').insert({
         first_name: finalData.firstName,
         middle_name: finalData.middleName || null,
         last_name: finalData.lastName,
@@ -101,7 +101,9 @@ export default function StudentRegistrationForm() {
         willing_to_relocate: finalData.relocate === 'yes',
         status: 'active',
         user_id: authData.user.id
-      });
+      })
+      .select()
+      .single();
 
       if (studentError) throw studentError;
 
@@ -116,7 +118,8 @@ export default function StudentRegistrationForm() {
         description: "Your account has been created successfully.",
       });
 
-      navigate('/dashboard/student');
+      // Navigate to success page with student details
+      navigate(`/student/registration-success?studentId=${studentData.id}`);
     } catch (error: any) {
       toast({
         title: "Registration Failed",
