@@ -17,7 +17,7 @@ interface HostelStats {
 }
 
 export default function HostelAdminDashboard() {
-  const { user, userRole, signOut } = useAuth();
+  const { user, userRole, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState<HostelStats>({
     totalCapacity: 0,
@@ -29,10 +29,11 @@ export default function HostelAdminDashboard() {
   });
 
   useEffect(() => {
-    if (userRole && userRole !== 'hostel_admin') {
+    // Only redirect if loading is complete and role doesn't match
+    if (!loading && userRole && userRole !== 'hostel_admin') {
       navigate('/portal-selection');
     }
-  }, [userRole, navigate]);
+  }, [userRole, loading, navigate]);
 
   useEffect(() => {
     const fetchStats = async () => {

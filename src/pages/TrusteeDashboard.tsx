@@ -17,7 +17,7 @@ interface TrusteeStats {
 }
 
 export default function TrusteeDashboard() {
-  const { user, userRole, signOut } = useAuth();
+  const { user, userRole, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState<TrusteeStats>({
     hostelsManaged: 0,
@@ -32,10 +32,11 @@ export default function TrusteeDashboard() {
   };
 
   useEffect(() => {
-    if (userRole && userRole !== 'trustee') {
+    // Only redirect if loading is complete and role doesn't match
+    if (!loading && userRole && userRole !== 'trustee') {
       navigate('/portal-selection');
     }
-  }, [userRole, navigate]);
+  }, [userRole, loading, navigate]);
 
   useEffect(() => {
     const fetchStats = async () => {

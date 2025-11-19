@@ -18,7 +18,7 @@ interface AdminStats {
 }
 
 export default function SuperAdminDashboard() {
-  const { user, userRole, signOut } = useAuth();
+  const { user, userRole, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState<AdminStats>({
     totalHostels: 0,
@@ -32,10 +32,11 @@ export default function SuperAdminDashboard() {
   });
 
   useEffect(() => {
-    if (userRole && userRole !== 'super_admin') {
+    // Only redirect if loading is complete and role doesn't match
+    if (!loading && userRole && userRole !== 'super_admin') {
       navigate('/portal-selection');
     }
-  }, [userRole, navigate]);
+  }, [userRole, loading, navigate]);
 
   useEffect(() => {
     const fetchStats = async () => {
