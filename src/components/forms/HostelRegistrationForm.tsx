@@ -93,6 +93,12 @@ export default function HostelRegistrationForm() {
       }
 
       // Step 2: Create hostel with admin_id
+      const totalCapacity = parseInt(finalData.capacity);
+      const numberOfRooms = parseInt(finalData.rooms);
+      const yearEstablished = parseInt(finalData.yearEstablished);
+      const fundingAmount = parseFloat(finalData.fundingAmount);
+      const monthlyExpenses = parseFloat(finalData.monthlyExpenses);
+
       const { data: hostelData, error: hostelError } = await supabase
         .from('hostels')
         .insert({
@@ -102,15 +108,15 @@ export default function HostelRegistrationForm() {
           email: finalData.email,
           phone: finalData.phone,
           website: finalData.website || null,
-          total_capacity: parseInt(finalData.capacity),
-          number_of_rooms: parseInt(finalData.rooms),
+          total_capacity: Number.isNaN(totalCapacity) ? 0 : totalCapacity,
+          number_of_rooms: Number.isNaN(numberOfRooms) ? null : numberOfRooms,
           room_types: finalData.selectedRoomTypes,
           facilities: finalData.selectedFacilities,
           hostel_type: finalData.hostelType,
-          year_established: parseInt(finalData.yearEstablished),
+          year_established: Number.isNaN(yearEstablished) ? null : yearEstablished,
           address_line1: finalData.address,
-          funding_needed: parseFloat(finalData.fundingAmount) || 0,
-          monthly_operational_cost: parseFloat(finalData.monthlyExpenses) || 0,
+          funding_needed: Number.isNaN(fundingAmount) ? 0 : fundingAmount,
+          monthly_operational_cost: Number.isNaN(monthlyExpenses) ? 0 : monthlyExpenses,
           govt_support: finalData.govtAid === 'yes',
           type: 'hostel',
           status: 'pending',
