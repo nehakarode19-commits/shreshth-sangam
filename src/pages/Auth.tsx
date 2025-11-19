@@ -285,7 +285,7 @@ const Auth = () => {
             navigate('/dashboard/hostel-admin');
             break;
           case 'institution_admin':
-            navigate('/dashboard/institution-admin');
+            navigate('/institution-admin/dashboard');
             break;
           case 'donor':
             navigate('/dashboard/donor');
@@ -294,7 +294,7 @@ const Auth = () => {
             navigate('/dashboard/trustee');
             break;
           case 'super_admin':
-            navigate('/dashboard/super-admin');
+            navigate('/super-admin/dashboard');
             break;
           default:
             navigate('/');
@@ -312,6 +312,9 @@ const Auth = () => {
         navigate('/student/register');
       } else if (portalType === 'hostel') {
         navigate('/hostel/register');
+      } else if (portalType === 'institution') {
+        // Institution admins can sign up directly through the auth form
+        return;
       }
     }
   }, [mode, portalType, navigate]);
@@ -322,6 +325,8 @@ const Auth = () => {
         return { icon: GraduationCap, title: 'Student Portal', role: 'student' };
       case 'hostel':
         return { icon: Building2, title: 'Hostel Portal', role: 'hostel_admin' };
+      case 'institution':
+        return { icon: Building2, title: 'Institution Admin Portal', role: 'institution_admin' };
       case 'trustee':
         return { icon: Users, title: 'Trustee Portal', role: 'trustee' };
       case 'donor':
@@ -426,6 +431,9 @@ const Auth = () => {
               case 'donor':
                 navigate('/dashboard/donor');
                 break;
+              case 'institution_admin':
+                navigate('/institution-admin/dashboard');
+                break;
               default:
                 navigate('/');
             }
@@ -468,7 +476,7 @@ const Auth = () => {
               navigate('/dashboard/hostel-admin');
               break;
             case 'institution_admin':
-              navigate('/dashboard/institution-admin');
+              navigate('/institution-admin/dashboard');
               break;
             case 'donor':
               navigate('/dashboard/donor');
@@ -477,7 +485,7 @@ const Auth = () => {
               navigate('/dashboard/trustee');
               break;
             case 'super_admin':
-              navigate('/dashboard/super-admin');
+              navigate('/super-admin/dashboard');
               break;
             default:
               navigate('/');

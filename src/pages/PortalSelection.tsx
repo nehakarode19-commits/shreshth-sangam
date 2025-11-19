@@ -17,7 +17,7 @@ const PortalSelection = () => {
       bgColor: 'bg-primary',
     },
     {
-      id: 'hostel',
+      id: 'institution',
       title: 'Institution Admin Portal',
       description: 'Manage institution operations, applications, and resources',
       icon: Building2,
